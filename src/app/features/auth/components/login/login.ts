@@ -6,7 +6,6 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +22,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading = false;
   errorMessage = '';
+  showPassword = false;
 
   constructor() {
     // T041: Reactive form validasyonu
@@ -34,11 +34,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     // T045: Giriş yapmış kullanıcıyı home'a yönlendir
-    this.authService.user$.pipe(take(1)).subscribe(user => {
-      if (user) {
-        this.router.navigate(['/home']);
-      }
-    });
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) {
+      this.router.navigate(['/home']);
+    }
   }
 
   async onSubmit() {
@@ -55,11 +54,13 @@ export class LoginComponent implements OnInit {
     try {
       await this.authService.login(email, password);
       // T045: Başarılı girişte home sayfasına yönlendir
-      this.router.navigate(['/home']);
+      // Auth state güncellenene kadar bekle
+      setTimeout(() => {
+        this.router.navigate(['/home']);
+      }, 100);
     } catch (error: any) {
       // T043: Kullanıcı dostu hata mesajı
       this.errorMessage = error.message;
-    } finally {
       this.isLoading = false;
     }
   }
@@ -70,5 +71,9 @@ export class LoginComponent implements OnInit {
 
   get password() {
     return this.loginForm.get('password');
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

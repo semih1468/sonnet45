@@ -1,125 +1,135 @@
-<!-- T073: History Component HTML Template -->
-<div class="min-h-screen bg-gray-50">
-  <!-- Header -->
-  <header class="bg-white shadow-sm">
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16">
-        <div class="flex space-x-8">
-          <a routerLink="/home" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            Ana Sayfa
-          </a>
-          <a routerLink="/tasks" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            Görevler
-          </a>
-          <a routerLink="/history" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-red-500">
-            Geçmiş
-          </a>
-          <a routerLink="/statistics" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            İstatistikler
-          </a>
-          <a routerLink="/settings" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            Ayarlar
-          </a>
-        </div>
-      </div>
-    </nav>
-  </header>
+<!-- History Component - Modern Tasarım -->
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-[#F3F4F6] dark:bg-[#1E1E1E] overflow-x-hidden">
+  <!-- Top App Bar -->
+  <div class="flex items-center bg-white dark:bg-[#1E1E1E] p-4 pb-2 justify-between sticky top-0 z-10">
+    <button routerLink="/home" class="text-[#1E1E1E] dark:text-[#F4F4F4] flex size-12 shrink-0 items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+        <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" />
+      </svg>
+    </button>
+    <h1 class="text-[#1E1E1E] dark:text-[#F4F4F4] text-xl font-bold leading-tight tracking-tight flex-1 text-center">Geçmiş</h1>
+    <div class="size-12 shrink-0"></div>
+  </div>
 
-  <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Page Title & View Mode Selector -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-4">Pomodoro Geçmişi</h1>
-
-      <!-- View Mode Tabs -->
-      <div class="border-b border-gray-200">
-        <nav class="-mb-px flex space-x-8">
-          <button
-            (click)="changeViewMode('today')"
-            [class]="viewMode === 'today' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-            Bugün
-          </button>
-          <button
-            (click)="changeViewMode('week')"
-            [class]="viewMode === 'week' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-            Bu Hafta
-          </button>
-          <button
-            (click)="changeViewMode('month')"
-            [class]="viewMode === 'month' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-            Bu Ay
-          </button>
-          <button
-            (click)="changeViewMode('all')"
-            [class]="viewMode === 'all' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-            Tümü
-          </button>
-        </nav>
-      </div>
+  <!-- View Mode Selector -->
+  <div class="flex px-4 py-3 bg-white dark:bg-[#1E1E1E]">
+    <div class="flex h-10 flex-1 items-center justify-center rounded-lg bg-[#F3F4F6] dark:bg-[#2C2C2E] p-1">
+      <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1E1E1E] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#1E1E1E] dark:has-[:checked]:text-white text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal">
+        <span class="truncate">Bugün</span>
+        <input
+          [checked]="viewMode === 'today'"
+          class="invisible w-0"
+          name="view-mode"
+          type="radio"
+          value="today"
+          (change)="changeViewMode('today')"/>
+      </label>
+      <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1E1E1E] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#1E1E1E] dark:has-[:checked]:text-white text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal">
+        <span class="truncate">Bu Hafta</span>
+        <input
+          [checked]="viewMode === 'week'"
+          class="invisible w-0"
+          name="view-mode"
+          type="radio"
+          value="week"
+          (change)="changeViewMode('week')"/>
+      </label>
+      <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1E1E1E] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#1E1E1E] dark:has-[:checked]:text-white text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal">
+        <span class="truncate">Bu Ay</span>
+        <input
+          [checked]="viewMode === 'month'"
+          class="invisible w-0"
+          name="view-mode"
+          type="radio"
+          value="month"
+          (change)="changeViewMode('month')"/>
+      </label>
+      <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1E1E1E] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#1E1E1E] dark:has-[:checked]:text-white text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal">
+        <span class="truncate">Tümü</span>
+        <input
+          [checked]="viewMode === 'all'"
+          class="invisible w-0"
+          name="view-mode"
+          type="radio"
+          value="all"
+          (change)="changeViewMode('all')"/>
+      </label>
     </div>
+  </div>
 
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#06D6A0]"></div>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading" class="flex-1">
     <!-- Summary Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-sm font-medium text-gray-500 mb-2">Tamamlanan Pomodoro</h3>
-        <p class="text-3xl font-bold text-gray-900">{{ getTotalCompletedSessions() }}</p>
+    <div class="flex flex-wrap gap-4 px-4 py-6">
+      <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-white dark:bg-[#2C2C2E]">
+        <p class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">Tamamlanan</p>
+        <p class="text-[#1E1E1E] dark:text-white tracking-light text-2xl font-bold leading-tight">
+          {{ getTotalCompletedSessions() }}
+        </p>
       </div>
-      <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-sm font-medium text-gray-500 mb-2">Toplam Çalışma Süresi</h3>
-        <p class="text-3xl font-bold text-gray-900">{{ getTotalWorkTime() | number:'1.0-0' }} dk</p>
+      <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-white dark:bg-[#2C2C2E]">
+        <p class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">Toplam Süre</p>
+        <p class="text-[#1E1E1E] dark:text-white tracking-light text-2xl font-bold leading-tight">
+          {{ getTotalWorkTime() | number:'1.0-0' }} dk
+        </p>
       </div>
-    </div>
-
-    <!-- Loading State -->
-    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
     </div>
 
     <!-- Empty State -->
-    <div *ngIf="!isLoading && sessions.length === 0" class="text-center py-12">
-      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <h3 class="mt-2 text-sm font-medium text-gray-900">Henüz pomodoro bulunmuyor</h3>
-      <p class="mt-1 text-sm text-gray-500">İlk pomodoro'nuzu başlatarak başlayın.</p>
-      <div class="mt-6">
-        <a routerLink="/home" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700">
-          Pomodoro Başlat
-        </a>
+    <div *ngIf="sessions.length === 0" class="flex flex-col items-center justify-center py-12 px-4">
+      <div class="bg-gray-200 dark:bg-gray-700 p-4 rounded-full mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-gray-500 dark:text-gray-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
       </div>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Henüz pomodoro bulunmuyor</h3>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">İlk pomodoro'nuzu başlatarak başlayın</p>
+      <button
+        routerLink="/home"
+        class="flex cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#06D6A0] text-[#1E1E1E] text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#06D6A0]/90 transition-colors">
+        <span class="truncate">Pomodoro Başlat</span>
+      </button>
     </div>
 
     <!-- Sessions List -->
-    <div *ngIf="!isLoading && sessions.length > 0" class="bg-white shadow overflow-hidden sm:rounded-md">
-      <ul class="divide-y divide-gray-200">
-        <li *ngFor="let session of sessions" class="px-6 py-4 hover:bg-gray-50">
-          <div class="flex items-center justify-between">
-            <div class="flex-1">
-              <div class="flex items-center justify-between">
-                <p class="text-sm font-medium text-gray-900">
-                  {{ getSessionDate(session) }}
+    <div *ngIf="sessions.length > 0" class="px-4 pb-6">
+      <div class="bg-white dark:bg-[#2C2C2E] rounded-xl overflow-hidden">
+        <div class="divide-y divide-gray-200 dark:divide-gray-700">
+          <div *ngFor="let session of sessions" class="p-4 hover:bg-gray-50 dark:hover:bg-[#1E1E1E]/50 transition-colors">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <div class="flex items-center justify-between mb-2">
+                  <p class="text-base font-medium text-[#1E1E1E] dark:text-white">
+                    {{ getSessionDate(session) }}
+                  </p>
+                  <span
+                    [class]="getStatusClass(session.status)"
+                    class="px-3 py-1 text-xs font-semibold rounded-full">
+                    {{ getStatusText(session.status) }}
+                  </span>
+                </div>
+                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>{{ getSessionDuration(session) }} dakika</span>
+                </div>
+                <p *ngIf="session.notes" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                  {{ session.notes }}
                 </p>
-                <span [class]="getStatusClass(session.status)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                  {{ getStatusText(session.status) }}
-                </span>
-              </div>
-              <div class="mt-2 flex items-center text-sm text-gray-500">
-                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
-                </svg>
-                {{ getSessionDuration(session) }} dakika
-              </div>
-              <div *ngIf="session.notes" class="mt-2 text-sm text-gray-500">
-                {{ session.notes }}
               </div>
             </div>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
-  </main>
+  </div>
+
+  <!-- Bottom Padding -->
+  <div class="h-5"></div>
 </div>

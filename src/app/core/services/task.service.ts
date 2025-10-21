@@ -21,17 +21,25 @@ import { Task, CreateTaskDto, UpdateTaskDto, TaskStatus } from '../models/task.m
   providedIn: 'root'
 })
 export class TaskService {
-  private firestore = inject(Firestore);
-  private authService = inject(AuthService);
+  private firestore: Firestore;
+  private authService: AuthService;
+
+  constructor() {
+    this.firestore = inject(Firestore);
+    this.authService = inject(AuthService);
+  }
 
   // T098: Yeni görev oluştur
   async createTask(taskDto: CreateTaskDto): Promise<string> {
     const user = this.authService.getCurrentUser();
+    console.log('createTask - Current user:', user);
     if (!user) {
       throw new Error('Kullanıcı giriş yapmamış');
     }
 
-    const tasksRef = collection(this.firestore, 'tasks');
+    const path = `users/${user.uid}/tasks`;
+    console.log('createTask - Firestore path:', path);
+    const tasksRef = collection(this.firestore, path);
     const newTask: Omit<Task, 'id'> = {
       userId: user.uid,
       title: taskDto.title,
@@ -47,13 +55,20 @@ export class TaskService {
       tags: taskDto.tags || []
     };
 
+    console.log('createTask - Creating task:', newTask);
     const docRef = await addDoc(tasksRef, newTask);
+    console.log('createTask - Task created with ID:', docRef.id);
     return docRef.id;
   }
 
   // T099: Görevi güncelle
   async updateTask(taskId: string, updateDto: UpdateTaskDto): Promise<void> {
-    const taskRef = doc(this.firestore, 'tasks', taskId);
+    const user = this.authService.getCurrentUser();
+    if (!user) {
+      throw new Error('Kullanıcı giriş yapmamış');
+    }
+
+    const taskRef = doc(this.firestore, `users/${user.uid}/tasks/${taskId}`);
 
     const updateData: any = {
       ...updateDto,
@@ -75,29 +90,48 @@ export class TaskService {
 
   // T100: Görevi sil
   async deleteTask(taskId: string): Promise<void> {
-    const taskRef = doc(this.firestore, 'tasks', taskId);
+    const user = this.authService.getCurrentUser();
+    if (!user) {
+      throw new Error('Kullanıcı giriş yapmamış');
+    }
+
+    const taskRef = doc(this.firestore, `users/${user.uid}/tasks/${taskId}`);
     await deleteDoc(taskRef);
   }
 
   // T101: Kullanıcının aktif görevlerini getir
   async getActiveTasks(): Promise<Task[]> {
     const user = this.authService.getCurrentUser();
-    if (!user) return [];
+    console.log('getActiveTasks - Current user:', user);
+    if (!user) {
+      console.log('getActiveTasks - No user logged in');
+      return [];
+    }
 
-    const tasksRef = collection(this.firestore, 'tasks');
+    const path = `users/${user.uid}/tasks`;
+    console.log('getActiveTasks - Firestore path:', path);
+    const tasksRef = collection(this.firestore, path);
     const q = query(
       tasksRef,
-      where('userId', '==', user.uid),
       where('status', '==', 'active'),
-      orderBy('priority', 'desc'),
       orderBy('createdAt', 'desc')
     );
 
+    console.log('getActiveTasks - Executing query...');
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
+    console.log('getActiveTasks - Query result, docs count:', querySnapshot.docs.length);
+    const tasks = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
     } as Task));
+
+    console.log('getActiveTasks - Tasks before sorting:', tasks);
+
+    // Client-side priority sorting
+    return tasks.sort((a, b) => {
+      const priorityOrder = { high: 3, medium: 2, low: 1 };
+      return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
+    });
   }
 
   // T102: Tamamlanmış görevleri getir
@@ -105,10 +139,9 @@ export class TaskService {
     const user = this.authService.getCurrentUser();
     if (!user) return [];
 
-    const tasksRef = collection(this.firestore, 'tasks');
+    const tasksRef = collection(this.firestore, `users/${user.uid}/tasks`);
     const q = query(
       tasksRef,
-      where('userId', '==', user.uid),
       where('status', '==', 'completed'),
       orderBy('completedAt', 'desc')
     );
@@ -125,10 +158,9 @@ export class TaskService {
     const user = this.authService.getCurrentUser();
     if (!user) return [];
 
-    const tasksRef = collection(this.firestore, 'tasks');
+    const tasksRef = collection(this.firestore, `users/${user.uid}/tasks`);
     const q = query(
       tasksRef,
-      where('userId', '==', user.uid),
       orderBy('createdAt', 'desc')
     );
 
@@ -144,11 +176,11 @@ export class TaskService {
     const user = this.authService.getCurrentUser();
     if (!user) return;
 
-    const taskRef = doc(this.firestore, 'tasks', taskId);
+    const taskRef = doc(this.firestore, `users/${user.uid}/tasks/${taskId}`);
 
     // Mevcut task'ı getir
-    const tasksRef = collection(this.firestore, 'tasks');
-    const q = query(tasksRef, where('userId', '==', user.uid));
+    const tasksRef = collection(this.firestore, `users/${user.uid}/tasks`);
+    const q = query(tasksRef);
     const querySnapshot = await getDocs(q);
 
     const taskDoc = querySnapshot.docs.find(d => d.id === taskId);

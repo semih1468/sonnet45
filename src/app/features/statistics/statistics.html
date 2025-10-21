@@ -1,227 +1,152 @@
-<!-- T142-T148: Statistics Component HTML Template -->
-<div class="min-h-screen bg-gray-50">
+<!-- Statistics Component - Modern Dashboard Tasarımı -->
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-[#F8F8F8] dark:bg-[#1E1E1E] overflow-x-hidden">
   <!-- Header -->
-  <header class="bg-white shadow-sm">
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16">
-        <div class="flex space-x-8">
-          <a routerLink="/home" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            Ana Sayfa
-          </a>
-          <a routerLink="/tasks" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            Görevler
-          </a>
-          <a routerLink="/history" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            Geçmiş
-          </a>
-          <a routerLink="/statistics" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-red-500">
-            İstatistikler
-          </a>
-          <a routerLink="/settings" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            Ayarlar
-          </a>
-        </div>
-      </div>
-    </nav>
-  </header>
+  <div class="flex items-center p-4 pb-2 justify-between bg-[#F8F8F8] dark:bg-[#1E1E1E]">
+    <button routerLink="/home" class="flex size-12 shrink-0 items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-slate-900 dark:text-white">
+        <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" />
+      </svg>
+    </button>
+    <h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Haftalık İlerleme</h2>
+    <div class="w-12"></div>
+  </div>
 
-  <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Page Title -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">İstatistikler</h1>
-      <p class="mt-1 text-sm text-gray-500">Pomodoro performans analiziniz ve ilerlemeniz</p>
+  <!-- Time Range Selector -->
+  <div class="flex px-4 py-3 bg-[#F8F8F8] dark:bg-[#1E1E1E]">
+    <div class="flex h-10 flex-1 items-center justify-center rounded-lg bg-slate-200 dark:bg-[#2C2C2E] p-1">
+      <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1E1E1E] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-slate-900 dark:has-[:checked]:text-white text-gray-600 dark:text-gray-400 text-sm font-medium leading-normal">
+        <span class="truncate">Haftalık</span>
+        <input
+          checked
+          class="invisible w-0"
+          name="time-range"
+          type="radio"
+          value="weekly"
+          (change)="setTimeRange('weekly')"/>
+      </label>
+      <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1E1E1E] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-slate-900 dark:has-[:checked]:text-white text-gray-600 dark:text-gray-400 text-sm font-medium leading-normal">
+        <span class="truncate">Aylık</span>
+        <input
+          class="invisible w-0"
+          name="time-range"
+          type="radio"
+          value="monthly"
+          (change)="setTimeRange('monthly')"/>
+      </label>
     </div>
+  </div>
 
-    <!-- Loading State -->
-    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#06D6A0]"></div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && (!weeklyStats || weeklyStats.totalSessions === 0)" class="flex flex-col items-center justify-center py-16 px-4">
+    <div class="bg-slate-200 dark:bg-[#2C2C2E] p-6 rounded-full mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-gray-400">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+      </svg>
     </div>
+    <h3 class="text-lg font-medium text-slate-900 dark:text-white mb-2">Henüz istatistik yok</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 text-center">İlk pomodoro seansınızı tamamlayarak başlayın!</p>
+    <button
+      routerLink="/home"
+      class="flex cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#06D6A0] text-[#1E1E1E] text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#06D6A0]/90 transition-colors">
+      <span class="truncate">Pomodoro Başlat</span>
+    </button>
+  </div>
 
-    <!-- Statistics Content -->
-    <div *ngIf="!isLoading" class="space-y-6">
-      <!-- Today's Overview Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <!-- Today's Pomodoros -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-          <div class="p-5">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div class="ml-5 w-0 flex-1">
-                <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Bugün Tamamlanan</dt>
-                  <dd class="flex items-baseline">
-                    <div class="text-2xl font-semibold text-gray-900">
-                      {{ todayStats?.completedSessions || 0 }}
-                    </div>
-                    <div class="ml-2 text-sm text-gray-500">pomodoro</div>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Today's Focus Time -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-          <div class="p-5">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div class="ml-5 w-0 flex-1">
-                <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Odaklanma Süresi</dt>
-                  <dd class="flex items-baseline">
-                    <div class="text-2xl font-semibold text-gray-900">
-                      {{ formatDuration(todayStats?.totalFocusTime || 0) }}
-                    </div>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Current Streak -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-          <div class="p-5">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
-                </svg>
-              </div>
-              <div class="ml-5 w-0 flex-1">
-                <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Seri</dt>
-                  <dd class="flex items-baseline">
-                    <div class="text-2xl font-semibold text-gray-900">
-                      {{ todayStats?.streak || 0 }}
-                    </div>
-                    <div class="ml-2 text-sm text-gray-500">gün</div>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Daily Goal Progress -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-          <div class="p-5">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <div class="ml-5 w-0 flex-1">
-                <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Günlük Hedef</dt>
-                  <dd class="flex items-baseline">
-                    <div class="text-2xl font-semibold text-gray-900">
-                      {{ todayProgress }}%
-                    </div>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Weekly Chart -->
-      <div class="bg-white shadow rounded-lg p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">Haftalık İlerleme</h3>
-        <div class="flex items-end justify-between h-64 space-x-2">
-          <div *ngFor="let day of weeklyStats?.dailyBreakdown" class="flex-1 flex flex-col items-center">
-            <div class="flex-1 w-full flex items-end justify-center mb-2">
-              <div
-                [style.height.%]="getBarHeight(day.completedSessions)"
-                [class]="isToday(day.date) ? 'bg-red-500' : 'bg-gray-300'"
-                class="w-full rounded-t-md transition-all hover:opacity-80 flex items-end justify-center pb-2">
-                <span *ngIf="day.completedSessions > 0" class="text-xs text-white font-medium">
-                  {{ day.completedSessions }}
-                </span>
-              </div>
-            </div>
-            <div class="text-xs text-gray-500 mt-2">{{ getDayName(day.date) }}</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Weekly & Monthly Stats Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Weekly Stats -->
-        <div class="bg-white shadow rounded-lg p-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Bu Hafta</h3>
-          <dl class="space-y-3">
-            <div class="flex justify-between">
-              <dt class="text-sm font-medium text-gray-500">Toplam Pomodoro</dt>
-              <dd class="text-sm text-gray-900 font-semibold">{{ weeklyStats?.totalSessions || 0 }}</dd>
-            </div>
-            <div class="flex justify-between">
-              <dt class="text-sm font-medium text-gray-500">Toplam Odaklanma</dt>
-              <dd class="text-sm text-gray-900 font-semibold">{{ formatDuration(weeklyStats?.totalFocusTime || 0) }}</dd>
-            </div>
-            <div class="flex justify-between">
-              <dt class="text-sm font-medium text-gray-500">Ortalama Süre</dt>
-              <dd class="text-sm text-gray-900 font-semibold">{{ formatDuration(weeklyStats?.averageSessionDuration || 0) }}</dd>
-            </div>
-            <div class="flex justify-between">
-              <dt class="text-sm font-medium text-gray-500">Seri</dt>
-              <dd class="text-sm text-gray-900 font-semibold">{{ weeklyStats?.currentStreak || 0 }} gün</dd>
-            </div>
-          </dl>
-        </div>
-
-        <!-- Monthly Stats -->
-        <div class="bg-white shadow rounded-lg p-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Bu Ay</h3>
-          <dl class="space-y-3">
-            <div class="flex justify-between">
-              <dt class="text-sm font-medium text-gray-500">Toplam Pomodoro</dt>
-              <dd class="text-sm text-gray-900 font-semibold">{{ monthlyStats?.totalSessions || 0 }}</dd>
-            </div>
-            <div class="flex justify-between">
-              <dt class="text-sm font-medium text-gray-500">Toplam Odaklanma</dt>
-              <dd class="text-sm text-gray-900 font-semibold">{{ formatDuration(monthlyStats?.totalFocusTime || 0) }}</dd>
-            </div>
-            <div class="flex justify-between">
-              <dt class="text-sm font-medium text-gray-500">Ortalama Süre</dt>
-              <dd class="text-sm text-gray-900 font-semibold">{{ formatDuration(monthlyStats?.averageSessionDuration || 0) }}</dd>
-            </div>
-            <div class="flex justify-between">
-              <dt class="text-sm font-medium text-gray-500">En İyi Seri</dt>
-              <dd class="text-sm text-gray-900 font-semibold">{{ monthlyStats?.bestStreak || 0 }} gün</dd>
-            </div>
-          </dl>
-        </div>
-      </div>
-
-      <!-- Next Break Info -->
-      <div *ngIf="nextBreakIn > 0" class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-            </svg>
-          </div>
-          <div class="ml-3">
-            <p class="text-sm text-blue-700">
-              Uzun molaya <span class="font-semibold">{{ nextBreakIn }}</span> pomodoro kaldı!
+  <!-- Statistics Content -->
+  <div *ngIf="!isLoading && weeklyStats && weeklyStats.totalSessions > 0">
+    <!-- Main Chart Card -->
+    <div class="flex flex-wrap gap-4 px-4 py-6 bg-[#F8F8F8] dark:bg-[#1E1E1E]">
+      <div class="flex min-w-72 flex-1 flex-col gap-4 p-6 rounded-xl bg-white dark:bg-[#2C2C2E] shadow-sm">
+        <div class="flex flex-col gap-2">
+          <p class="text-slate-900 dark:text-white text-base font-medium leading-normal">
+            {{ timeRange === 'weekly' ? 'Haftalık Odaklanma Süresi' : 'Aylık Odaklanma Süresi' }}
+          </p>
+          <p class="text-slate-900 dark:text-white tracking-light text-[32px] font-bold leading-tight truncate">
+            {{ formatDuration(timeRange === 'weekly' ? (weeklyStats?.totalFocusTime || 0) : (monthlyStats?.totalFocusTime || 0)) }}
+          </p>
+          <div class="flex gap-2 items-center">
+            <p class="text-gray-600 dark:text-gray-400 text-base font-normal leading-normal">
+              {{ getDateRangeText() }}
+            </p>
+            <p class="text-[#06D6A0] text-base font-medium leading-normal flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                <path fill-rule="evenodd" d="M11.47 2.47a.75.75 0 011.06 0l7.5 7.5a.75.75 0 11-1.06 1.06l-6.22-6.22V21a.75.75 0 01-1.5 0V4.81l-6.22 6.22a.75.75 0 11-1.06-1.06l7.5-7.5z" clip-rule="evenodd" />
+              </svg>
+              <span>{{ todayProgress }}%</span>
             </p>
           </div>
         </div>
+
+        <!-- Bar Chart -->
+        <div class="grid min-h-[180px] grid-flow-col gap-4 grid-rows-[1fr_auto] items-end justify-items-center">
+          <ng-container *ngFor="let day of getChartData()">
+            <div
+              class="w-full rounded-t-sm"
+              [ngClass]="isToday(day.date) ? 'bg-[#EF476F]' : 'bg-[#06D6A0]'"
+              [style.height.%]="getBarHeight(day.completedSessions)">
+            </div>
+            <p
+              class="text-[13px] font-bold leading-normal tracking-[0.015em]"
+              [ngClass]="isToday(day.date) ? 'text-[#EF476F]' : 'text-gray-600 dark:text-gray-400'">
+              {{ getDayAbbr(day.date) }}
+            </p>
+          </ng-container>
+        </div>
       </div>
     </div>
-  </main>
+
+    <!-- Stats Cards Grid -->
+    <div class="flex flex-wrap gap-4 p-4 pt-0">
+      <!-- Average Session Card -->
+      <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-white dark:bg-[#2C2C2E] shadow-sm">
+        <p class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">Ort. Seans</p>
+        <p class="text-slate-900 dark:text-white tracking-light text-2xl font-bold leading-tight">
+          {{ formatDuration(timeRange === 'weekly' ? (weeklyStats?.averageSessionDuration || 0) : (monthlyStats?.averageSessionDuration || 0)) }}
+        </p>
+      </div>
+
+      <!-- Total Pomodoros Card -->
+      <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-white dark:bg-[#2C2C2E] shadow-sm">
+        <p class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">Toplam Pomodoro</p>
+        <p class="text-slate-900 dark:text-white tracking-light text-2xl font-bold leading-tight">
+          {{ timeRange === 'weekly' ? (weeklyStats?.totalSessions || 0) : (monthlyStats?.totalSessions || 0) }}
+        </p>
+      </div>
+
+      <!-- Productivity Streak Card -->
+      <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-white dark:bg-[#2C2C2E] shadow-sm">
+        <p class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal flex items-center gap-1.5">
+          Verimlilik Serisi
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-[#EF476F]">
+            <path fill-rule="evenodd" d="M12.963 2.286a.75.75 0 00-1.071-.136 9.742 9.742 0 00-3.539 6.177A7.547 7.547 0 016.648 6.61a.75.75 0 00-1.152-.082A9 9 0 1015.68 4.534a7.46 7.46 0 01-2.717-2.248zM15.75 14.25a3.75 3.75 0 11-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 011.925-3.545 3.75 3.75 0 013.255 3.717z" clip-rule="evenodd" />
+          </svg>
+        </p>
+        <p class="text-slate-900 dark:text-white tracking-light text-2xl font-bold leading-tight">
+          {{ todayStats?.streak || 0 }} gün
+        </p>
+      </div>
+
+      <!-- Total Focus Card -->
+      <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-white dark:bg-[#2C2C2E] shadow-sm">
+        <p class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">Toplam Odaklanma</p>
+        <p class="text-slate-900 dark:text-white tracking-light text-2xl font-bold leading-tight">
+          {{ formatDuration(timeRange === 'weekly' ? (weeklyStats?.totalFocusTime || 0) : (monthlyStats?.totalFocusTime || 0)) }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Start New Session Button -->
+    <div class="px-4 py-3 mt-auto">
+      <button
+        routerLink="/home"
+        class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#06D6A0] text-[#1E1E1E] text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#06D6A0]/90 transition-colors">
+        <span class="truncate">Yeni Seans Başlat</span>
+      </button>
+    </div>
+  </div>
 </div>

@@ -1,250 +1,242 @@
-<!-- T125-T126-T128-T131: Settings Component HTML Template -->
-<div class="min-h-screen bg-gray-50">
-  <!-- Header -->
-  <header class="bg-white shadow-sm">
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16">
-        <div class="flex space-x-8">
-          <a routerLink="/home" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            Ana Sayfa
-          </a>
-          <a routerLink="/tasks" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            Görevler
-          </a>
-          <a routerLink="/history" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            Geçmiş
-          </a>
-          <a routerLink="/statistics" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
-            İstatistikler
-          </a>
-          <a routerLink="/settings" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-red-500">
-            Ayarlar
-          </a>
-        </div>
-      </div>
-    </nav>
-  </header>
+<!-- Settings Component - Modern Tasarım -->
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-[#F0F0F0] dark:bg-[#1E1E1E] overflow-x-hidden">
+  <!-- Top App Bar -->
+  <div class="flex items-center bg-white dark:bg-[#1E1E1E] p-4 pb-2 justify-between sticky top-0 z-10">
+    <button routerLink="/home" class="text-[#1E1E1E] dark:text-[#F4F4F4] flex size-12 shrink-0 items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+        <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" />
+      </svg>
+    </button>
+    <h1 class="text-[#1E1E1E] dark:text-[#F4F4F4] text-xl font-bold leading-tight tracking-tight flex-1 text-center">Ayarlar</h1>
+    <div class="size-12 shrink-0"></div>
+  </div>
 
-  <!-- Main Content -->
-  <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Page Title -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Ayarlar</h1>
-      <p class="mt-1 text-sm text-gray-500">Pomodoro zamanlayıcınızı ve bildirim tercihlerinizi özelleştirin</p>
-    </div>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A90E2]"></div>
+  </div>
 
-    <!-- Loading State -->
-    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
-    </div>
-
-    <!-- Settings Form -->
-    <div *ngIf="!isLoading" class="space-y-6">
-      <!-- Success Message -->
-      <div *ngIf="showSuccessMessage" class="rounded-md bg-green-50 p-4">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-            </svg>
-          </div>
-          <div class="ml-3">
-            <p class="text-sm font-medium text-green-800">Ayarlar başarıyla kaydedildi!</p>
-          </div>
-        </div>
-      </div>
-
-      <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
-        <!-- Timer Settings Section -->
-        <div class="bg-white shadow sm:rounded-lg p-6 mb-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Zamanlayıcı Ayarları</h3>
-
-          <div class="space-y-4">
-            <!-- Work Duration -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700">
-                Çalışma Süresi (dakika)
-              </label>
+  <!-- Settings Content -->
+  <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <div class="px-4 py-2 space-y-8">
+      <!-- Session Lengths Section -->
+      <div>
+        <h2 class="text-[#1E1E1E]/80 dark:text-[#F4F4F4]/80 text-sm font-semibold uppercase tracking-wider px-4 pb-3 pt-5">
+          Oturum Süreleri
+        </h2>
+        <div class="bg-white dark:bg-[#2C2C2C] rounded-xl">
+          <!-- Focus Duration Slider -->
+          <div class="relative flex w-full flex-col items-start justify-between gap-3 p-4 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex w-full items-center justify-between">
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium leading-normal">Odaklanma</p>
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-sm font-normal leading-normal">
+                {{ settingsForm.get('workDuration')?.value }} dk
+              </p>
+            </div>
+            <div class="flex h-4 w-full items-center gap-4">
               <input
-                type="number"
+                type="range"
                 formControlName="workDuration"
                 min="5"
                 max="60"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
-              <p class="mt-1 text-sm text-gray-500">5-60 dakika arasında</p>
+                class="flex-1 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full appearance-none cursor-pointer
+                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5
+                       [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#4A90E2]
+                       [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md
+                       [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full
+                       [&::-moz-range-thumb]:bg-[#4A90E2] [&::-moz-range-thumb]:border-none [&::-moz-range-thumb]:cursor-pointer">
             </div>
+          </div>
 
-            <!-- Short Break Duration -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700">
-                Kısa Mola Süresi (dakika)
-              </label>
+          <!-- Break Duration Slider -->
+          <div class="relative flex w-full flex-col items-start justify-between gap-3 p-4">
+            <div class="flex w-full items-center justify-between">
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium leading-normal">Kısa Mola</p>
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-sm font-normal leading-normal">
+                {{ settingsForm.get('shortBreakDuration')?.value }} dk
+              </p>
+            </div>
+            <div class="flex h-4 w-full items-center gap-4">
               <input
-                type="number"
+                type="range"
                 formControlName="shortBreakDuration"
                 min="1"
                 max="15"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
-              <p class="mt-1 text-sm text-gray-500">1-15 dakika arasında</p>
+                class="flex-1 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full appearance-none cursor-pointer
+                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5
+                       [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#4A90E2]
+                       [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md
+                       [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full
+                       [&::-moz-range-thumb]:bg-[#4A90E2] [&::-moz-range-thumb]:border-none [&::-moz-range-thumb]:cursor-pointer">
             </div>
+          </div>
 
-            <!-- Long Break Duration -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700">
-                Uzun Mola Süresi (dakika)
-              </label>
+          <!-- Long Break Duration Slider -->
+          <div class="relative flex w-full flex-col items-start justify-between gap-3 p-4 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex w-full items-center justify-between">
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium leading-normal">Uzun Mola</p>
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-sm font-normal leading-normal">
+                {{ settingsForm.get('longBreakDuration')?.value }} dk
+              </p>
+            </div>
+            <div class="flex h-4 w-full items-center gap-4">
               <input
-                type="number"
+                type="range"
                 formControlName="longBreakDuration"
                 min="5"
                 max="30"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
-              <p class="mt-1 text-sm text-gray-500">5-30 dakika arasında</p>
-            </div>
-
-            <!-- Long Break Interval -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700">
-                Uzun Molaya Kadar Pomodoro Sayısı
-              </label>
-              <input
-                type="number"
-                formControlName="longBreakInterval"
-                min="2"
-                max="10"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
-              <p class="mt-1 text-sm text-gray-500">2-10 pomodoro arasında</p>
-            </div>
-
-            <!-- Daily Goal -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700">
-                Günlük Hedef (pomodoro)
-              </label>
-              <input
-                type="number"
-                formControlName="dailyGoal"
-                min="1"
-                max="20"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
-              <p class="mt-1 text-sm text-gray-500">1-20 pomodoro arasında</p>
+                class="flex-1 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full appearance-none cursor-pointer
+                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5
+                       [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#4A90E2]
+                       [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md
+                       [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full
+                       [&::-moz-range-thumb]:bg-[#4A90E2] [&::-moz-range-thumb]:border-none [&::-moz-range-thumb]:cursor-pointer">
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- General Settings Section -->
-        <div class="bg-white shadow sm:rounded-lg p-6 mb-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Genel Ayarlar</h3>
+      <!-- General Section -->
+      <div>
+        <h2 class="text-[#1E1E1E]/80 dark:text-[#F4F4F4]/80 text-sm font-semibold uppercase tracking-wider px-4 pb-3 pt-5">
+          Genel
+        </h2>
+        <div class="bg-white dark:bg-[#2C2C2C] rounded-xl divide-y divide-gray-200 dark:divide-gray-700">
+          <!-- Sound Toggle -->
+          <div class="flex items-center justify-between p-4">
+            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">Ses</p>
+            <button
+              type="button"
+              (click)="settingsForm.patchValue({soundEnabled: !settingsForm.get('soundEnabled')?.value})"
+              [class.bg-[#4A90E2]]="settingsForm.get('soundEnabled')?.value"
+              [class.bg-gray-300]="!settingsForm.get('soundEnabled')?.value"
+              [class.dark:bg-gray-600]="!settingsForm.get('soundEnabled')?.value"
+              class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#4A90E2] focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1E1E1E]">
+              <span class="sr-only">Ses ayarı</span>
+              <span
+                [class.translate-x-5]="settingsForm.get('soundEnabled')?.value"
+                [class.translate-x-0]="!settingsForm.get('soundEnabled')?.value"
+                class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+            </button>
+          </div>
 
-          <div class="space-y-4">
-            <!-- Auto Start Breaks -->
-            <div class="flex items-start">
-              <div class="flex items-center h-5">
-                <input
-                  id="autoStartBreaks"
-                  type="checkbox"
-                  formControlName="autoStartBreaks"
-                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
-              </div>
-              <div class="ml-3 text-sm">
-                <label for="autoStartBreaks" class="font-medium text-gray-700">Molaları Otomatik Başlat</label>
-                <p class="text-gray-500">Çalışma süresi bittiğinde mola otomatik başlar</p>
-              </div>
-            </div>
+          <!-- Dark Mode Toggle -->
+          <div class="flex items-center justify-between p-4">
+            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">Karanlık Mod</p>
+            <button
+              type="button"
+              (click)="toggleDarkMode()"
+              [class.bg-[#4A90E2]]="settingsForm.get('darkMode')?.value"
+              [class.bg-gray-300]="!settingsForm.get('darkMode')?.value"
+              [class.dark:bg-gray-600]="!settingsForm.get('darkMode')?.value"
+              class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#4A90E2] focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1E1E1E]">
+              <span class="sr-only">Karanlık mod</span>
+              <span
+                [class.translate-x-5]="settingsForm.get('darkMode')?.value"
+                [class.translate-x-0]="!settingsForm.get('darkMode')?.value"
+                class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+            </button>
+          </div>
 
-            <!-- Auto Start Pomodoros -->
-            <div class="flex items-start">
-              <div class="flex items-center h-5">
-                <input
-                  id="autoStartPomodoros"
-                  type="checkbox"
-                  formControlName="autoStartPomodoros"
-                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
-              </div>
-              <div class="ml-3 text-sm">
-                <label for="autoStartPomodoros" class="font-medium text-gray-700">Pomodoro'ları Otomatik Başlat</label>
-                <p class="text-gray-500">Mola bittiğinde bir sonraki pomodoro otomatik başlar</p>
-              </div>
-            </div>
+          <!-- Auto-start next session Toggle -->
+          <div class="flex items-center justify-between p-4">
+            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">Sonraki oturumu otomatik başlat</p>
+            <button
+              type="button"
+              (click)="settingsForm.patchValue({autoStartBreaks: !settingsForm.get('autoStartBreaks')?.value})"
+              [class.bg-[#4A90E2]]="settingsForm.get('autoStartBreaks')?.value"
+              [class.bg-gray-300]="!settingsForm.get('autoStartBreaks')?.value"
+              [class.dark:bg-gray-600]="!settingsForm.get('autoStartBreaks')?.value"
+              class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#4A90E2] focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1E1E1E]">
+              <span class="sr-only">Otomatik başlatma</span>
+              <span
+                [class.translate-x-5]="settingsForm.get('autoStartBreaks')?.value"
+                [class.translate-x-0]="!settingsForm.get('autoStartBreaks')?.value"
+                class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+            </button>
+          </div>
 
-            <!-- Notifications Enabled -->
-            <div class="flex items-start">
-              <div class="flex items-center h-5">
-                <input
-                  id="notificationsEnabled"
-                  type="checkbox"
-                  formControlName="notificationsEnabled"
-                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
-              </div>
-              <div class="ml-3 text-sm">
-                <label for="notificationsEnabled" class="font-medium text-gray-700">Bildirimleri Etkinleştir</label>
-                <p class="text-gray-500">Pomodoro tamamlandığında bildirim al</p>
-              </div>
-            </div>
-
-            <!-- Sound Enabled -->
-            <div class="flex items-start">
-              <div class="flex items-center h-5">
-                <input
-                  id="soundEnabled"
-                  type="checkbox"
-                  formControlName="soundEnabled"
-                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
-              </div>
-              <div class="ml-3 text-sm">
-                <label for="soundEnabled" class="font-medium text-gray-700">Sesleri Etkinleştir</label>
-                <p class="text-gray-500">Pomodoro tamamlandığında ses çal</p>
-              </div>
-            </div>
-
-            <!-- Sound Volume -->
-            <div *ngIf="settingsForm.get('soundEnabled')?.value">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Ses Seviyesi ({{ settingsForm.get('soundVolume')?.value }}%)
-              </label>
-              <input
-                type="range"
-                formControlName="soundVolume"
-                min="0"
-                max="100"
-                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-            </div>
-
-            <!-- Dark Mode -->
-            <div class="flex items-start">
-              <div class="flex items-center h-5">
-                <input
-                  id="darkMode"
-                  type="checkbox"
-                  formControlName="darkMode"
-                  (change)="toggleDarkMode()"
-                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
-              </div>
-              <div class="ml-3 text-sm">
-                <label for="darkMode" class="font-medium text-gray-700">Karanlık Mod</label>
-                <p class="text-gray-500">Karanlık renk temasını kullan</p>
-              </div>
-            </div>
+          <!-- Notifications Toggle -->
+          <div class="flex items-center justify-between p-4">
+            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">Bildirimler</p>
+            <button
+              type="button"
+              (click)="settingsForm.patchValue({notificationsEnabled: !settingsForm.get('notificationsEnabled')?.value})"
+              [class.bg-[#4A90E2]]="settingsForm.get('notificationsEnabled')?.value"
+              [class.bg-gray-300]="!settingsForm.get('notificationsEnabled')?.value"
+              [class.dark:bg-gray-600]="!settingsForm.get('notificationsEnabled')?.value"
+              class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#4A90E2] focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1E1E1E]">
+              <span class="sr-only">Bildirimler</span>
+              <span
+                [class.translate-x-5]="settingsForm.get('notificationsEnabled')?.value"
+                [class.translate-x-0]="!settingsForm.get('notificationsEnabled')?.value"
+                class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+            </button>
           </div>
         </div>
+      </div>
 
-        <!-- Form Actions -->
-        <div class="flex justify-between">
-          <button
-            type="button"
-            (click)="resetToDefaults()"
-            class="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-            Varsayılana Sıfırla
-          </button>
-
-          <button
-            type="submit"
-            [disabled]="settingsForm.invalid || isSaving"
-            class="px-6 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed">
-            {{ isSaving ? 'Kaydediliyor...' : 'Kaydet' }}
-          </button>
+      <!-- Goals Section -->
+      <div>
+        <h2 class="text-[#1E1E1E]/80 dark:text-[#F4F4F4]/80 text-sm font-semibold uppercase tracking-wider px-4 pb-3 pt-5">
+          Hedefler
+        </h2>
+        <div class="bg-white dark:bg-[#2C2C2C] rounded-xl">
+          <div class="p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">Günlük Hedef</p>
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  (click)="decrementDailyGoal()"
+                  class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
+                  </svg>
+                </button>
+                <span class="text-[#1E1E1E] dark:text-[#F4F4F4] text-lg font-medium w-12 text-center">
+                  {{ settingsForm.get('dailyGoal')?.value }}
+                </span>
+                <button
+                  type="button"
+                  (click)="incrementDailyGoal()"
+                  class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Günlük tamamlamanız gereken pomodoro sayısı</p>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
-  </main>
+
+    <!-- Save Button Section -->
+    <div class="px-4 py-6 mt-auto">
+      <!-- Success Message -->
+      <div *ngIf="showSuccessMessage" class="mb-4 p-3 bg-green-100 dark:bg-green-900/20 rounded-lg text-center">
+        <p class="text-green-600 dark:text-green-400 text-sm font-medium">✓ Ayarlar başarıyla kaydedildi</p>
+      </div>
+
+      <!-- Save Button -->
+      <button
+        type="submit"
+        [disabled]="settingsForm.invalid || isSaving"
+        class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#4A90E2] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#4A90E2]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        <span class="truncate">{{ isSaving ? 'Kaydediliyor...' : 'Ayarları Kaydet' }}</span>
+      </button>
+
+      <!-- Reset Button -->
+      <button
+        type="button"
+        (click)="resetToDefaults()"
+        class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 mt-3 bg-transparent text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
+        <span class="truncate">Varsayılanlara Dön</span>
+      </button>
+    </div>
+  </form>
+
+  <div class="h-5"></div>
 </div>

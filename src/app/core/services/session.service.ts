@@ -27,7 +27,7 @@ export class SessionService {
 
   // T053: Yeni session oluştur
   async createSession(taskId?: string): Promise<string> {
-    const user = await this.authService.getCurrentUser();
+    const user = this.authService.getCurrentUser();
 
     if (!user) {
       throw new Error('Kullanıcı oturumu bulunamadı');
@@ -52,7 +52,7 @@ export class SessionService {
 
   // T053: Session'ı tamamla
   async completeSession(sessionId: string, duration: number, notes?: string): Promise<void> {
-    const user = await this.authService.getCurrentUser();
+    const user = this.authService.getCurrentUser();
 
     if (!user) {
       throw new Error('Kullanıcı oturumu bulunamadı');
@@ -71,7 +71,7 @@ export class SessionService {
 
   // T053: Session'ı iptal et
   async cancelSession(sessionId: string): Promise<void> {
-    const user = await this.authService.getCurrentUser();
+    const user = this.authService.getCurrentUser();
 
     if (!user) {
       throw new Error('Kullanıcı oturumu bulunamadı');
@@ -87,10 +87,10 @@ export class SessionService {
 
   // T054: Bugünün sessionlarını getir
   async getTodaySessions(): Promise<Session[]> {
-    const user = await this.authService.getCurrentUser();
+    const user = this.authService.getCurrentUser();
 
     if (!user) {
-      throw new Error('Kullanıcı oturumu bulunamadı');
+      return [];
     }
 
     const today = new Date();
@@ -100,7 +100,6 @@ export class SessionService {
     const q = query(
       sessionsRef,
       where('startTime', '>=', Timestamp.fromDate(today)),
-      where('status', '==', 'completed'),
       orderBy('startTime', 'desc')
     );
 
@@ -108,21 +107,20 @@ export class SessionService {
     return snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    } as Session));
+    } as Session)).filter(session => session.status === 'completed');
   }
 
   // T054: Son N session'ı getir
   async getRecentSessions(limitCount: number = 10): Promise<Session[]> {
-    const user = await this.authService.getCurrentUser();
+    const user = this.authService.getCurrentUser();
 
     if (!user) {
-      throw new Error('Kullanıcı oturumu bulunamadı');
+      return [];
     }
 
     const sessionsRef = collection(this.firestore, `users/${user.uid}/sessions`);
     const q = query(
       sessionsRef,
-      where('status', '==', 'completed'),
       orderBy('startTime', 'desc'),
       limit(limitCount)
     );
@@ -131,22 +129,21 @@ export class SessionService {
     return snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    } as Session));
+    } as Session)).filter(session => session.status === 'completed');
   }
 
   // T054: Belirli bir task için sessionları getir
   async getSessionsByTask(taskId: string): Promise<Session[]> {
-    const user = await this.authService.getCurrentUser();
+    const user = this.authService.getCurrentUser();
 
     if (!user) {
-      throw new Error('Kullanıcı oturumu bulunamadı');
+      return [];
     }
 
     const sessionsRef = collection(this.firestore, `users/${user.uid}/sessions`);
     const q = query(
       sessionsRef,
       where('taskId', '==', taskId),
-      where('status', '==', 'completed'),
       orderBy('startTime', 'desc')
     );
 
@@ -154,15 +151,15 @@ export class SessionService {
     return snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    } as Session));
+    } as Session)).filter(session => session.status === 'completed');
   }
 
   // Tarih aralığına göre sessionları getir
   async getSessionsByDateRange(startDate: Date, endDate: Date): Promise<Session[]> {
-    const user = await this.authService.getCurrentUser();
+    const user = this.authService.getCurrentUser();
 
     if (!user) {
-      throw new Error('Kullanıcı oturumu bulunamadı');
+      return [];
     }
 
     const sessionsRef = collection(this.firestore, `users/${user.uid}/sessions`);
@@ -170,7 +167,6 @@ export class SessionService {
       sessionsRef,
       where('startTime', '>=', Timestamp.fromDate(startDate)),
       where('startTime', '<=', Timestamp.fromDate(endDate)),
-      where('status', '==', 'completed'),
       orderBy('startTime', 'desc')
     );
 
@@ -178,6 +174,6 @@ export class SessionService {
     return snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    } as Session));
+    } as Session)).filter(session => session.status === 'completed');
   }
 }

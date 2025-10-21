@@ -6,7 +6,6 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signup',
@@ -23,10 +22,12 @@ export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   isLoading = false;
   errorMessage = '';
+  showPassword = false;
 
   constructor() {
     // T042: Reactive form validasyonu
     this.signupForm = this.fb.group({
+      fullName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
@@ -35,11 +36,10 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     // T045: Giriş yapmış kullanıcıyı home'a yönlendir
-    this.authService.user$.pipe(take(1)).subscribe(user => {
-      if (user) {
-        this.router.navigate(['/home']);
-      }
-    });
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) {
+      this.router.navigate(['/home']);
+    }
   }
 
   async onSubmit() {
@@ -62,11 +62,13 @@ export class SignupComponent implements OnInit {
     try {
       await this.authService.signup(email, password);
       // T045: Başarılı kayıtta home sayfasına yönlendir
-      this.router.navigate(['/home']);
+      // Auth state güncellenene kadar bekle
+      setTimeout(() => {
+        this.router.navigate(['/home']);
+      }, 100);
     } catch (error: any) {
       // T043: Kullanıcı dostu hata mesajı
       this.errorMessage = error.message;
-    } finally {
       this.isLoading = false;
     }
   }
@@ -81,5 +83,13 @@ export class SignupComponent implements OnInit {
 
   get confirmPassword() {
     return this.signupForm.get('confirmPassword');
+  }
+
+  get fullName() {
+    return this.signupForm.get('fullName');
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

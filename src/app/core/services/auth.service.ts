@@ -28,6 +28,9 @@ export class AuthService {
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
 
+  private authInitializedSubject = new BehaviorSubject<boolean>(false);
+  public authInitialized$ = this.authInitializedSubject.asObservable();
+
   constructor() {
     // Listen to auth state changes
     onAuthStateChanged(this.auth, (firebaseUser) => {
@@ -41,6 +44,10 @@ export class AuthService {
         this.userSubject.next(user);
       } else {
         this.userSubject.next(null);
+      }
+      // Mark auth as initialized after first state change
+      if (!this.authInitializedSubject.value) {
+        this.authInitializedSubject.next(true);
       }
     });
   }

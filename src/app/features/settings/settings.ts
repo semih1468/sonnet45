@@ -2,12 +2,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { SettingsService } from '../../core/services/settings.service';
 import { Settings } from '../../core/models/settings.model';
 
 @Component({
   selector: 'app-settings',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './settings.html',
   styleUrl: './settings.scss',
   standalone: true
@@ -15,6 +16,9 @@ import { Settings } from '../../core/models/settings.model';
 export class SettingsComponent implements OnInit {
   private settingsService = inject(SettingsService);
   private fb = inject(FormBuilder);
+
+  // Math for template usage
+  Math = Math;
 
   isLoading = false;
   isSaving = false;
@@ -135,5 +139,15 @@ export class SettingsComponent implements OnInit {
   toggleDarkMode() {
     const currentValue = this.settingsForm.get('darkMode')?.value;
     this.settingsForm.patchValue({ darkMode: !currentValue });
+  }
+
+  decrementDailyGoal() {
+    const currentValue = this.settingsForm.get('dailyGoal')?.value || 1;
+    this.settingsForm.patchValue({ dailyGoal: Math.max(1, currentValue - 1) });
+  }
+
+  incrementDailyGoal() {
+    const currentValue = this.settingsForm.get('dailyGoal')?.value || 1;
+    this.settingsForm.patchValue({ dailyGoal: Math.min(20, currentValue + 1) });
   }
 }

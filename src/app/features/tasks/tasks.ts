@@ -20,6 +20,9 @@ export class TasksComponent implements OnInit {
   tasks: Task[] = [];
   isLoading = true;
   showAddForm = false;
+  showEditForm = false;
+  editingTask: Task | null = null;
+  selectedTaskMenu: Task | null = null;
   viewMode: 'active' | 'completed' | 'all' = 'active';
 
   taskForm: FormGroup = this.fb.group({
@@ -39,6 +42,7 @@ export class TasksComponent implements OnInit {
     this.isLoading = true;
 
     try {
+      console.log('Tasklar yükleniyor, viewMode:', this.viewMode);
       switch (this.viewMode) {
         case 'active':
           this.tasks = await this.taskService.getActiveTasks();
@@ -50,8 +54,10 @@ export class TasksComponent implements OnInit {
           this.tasks = await this.taskService.getAllTasks();
           break;
       }
+      console.log('Yüklenen task sayısı:', this.tasks.length, this.tasks);
     } catch (error) {
       console.error('Görevler yüklenirken hata:', error);
+      alert('Görevler yüklenirken hata: ' + (error as any).message);
     } finally {
       this.isLoading = false;
     }
@@ -73,7 +79,10 @@ export class TasksComponent implements OnInit {
   }
 
   async onSubmit() {
-    if (this.taskForm.invalid) return;
+    if (this.taskForm.invalid) {
+      console.log('Form geçersiz:', this.taskForm.errors);
+      return;
+    }
 
     try {
       const taskDto: CreateTaskDto = {
@@ -81,11 +90,15 @@ export class TasksComponent implements OnInit {
         dueDate: this.taskForm.value.dueDate ? new Date(this.taskForm.value.dueDate) : undefined
       };
 
-      await this.taskService.createTask(taskDto);
+      console.log('Task oluşturuluyor:', taskDto);
+      const taskId = await this.taskService.createTask(taskDto);
+      console.log('Task başarıyla oluşturuldu, ID:', taskId);
       this.toggleAddForm();
       await this.loadTasks();
+      console.log('Yüklenen tasklar:', this.tasks);
     } catch (error) {
       console.error('Görev oluşturulurken hata:', error);
+      alert('Görev oluşturulurken hata: ' + (error as any).message);
     }
   }
 
@@ -98,15 +111,40 @@ export class TasksComponent implements OnInit {
     }
   }
 
-  async deleteTask(taskId: string) {
+  toggleTaskMenu(task: Task) {
+    this.selectedTaskMenu = this.selectedTaskMenu?.id === task.id ? null : task;
+  }
+
+  editTask(task: Task) {
+    this.editingTask = task;
+    this.taskForm.patchValue({
+      title: task.title,
+      description: task.description || '',
+      priority: task.priority,
+      estimatedPomodoros: task.estimatedPomodoros,
+      dueDate: task.dueDate ? this.formatDateForInput(task.dueDate) : null,
+      tags: task.tags || []
+    });
+    this.showEditForm = true;
+    this.selectedTaskMenu = null;
+  }
+
+  async deleteTask(task: Task) {
     if (!confirm('Bu görevi silmek istediğinize emin misiniz?')) return;
 
     try {
-      await this.taskService.deleteTask(taskId);
+      await this.taskService.deleteTask(task.id);
       await this.loadTasks();
+      this.selectedTaskMenu = null;
     } catch (error) {
       console.error('Görev silinirken hata:', error);
     }
+  }
+
+  formatDateForInput(timestamp: any): string {
+    if (!timestamp) return '';
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toISOString().split('T')[0];
   }
 
   getProgressPercentage(task: Task): number {

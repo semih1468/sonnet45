@@ -7,13 +7,14 @@ import { TimerService } from '../../core/services/timer.service';
 import { SessionService } from '../../core/services/session.service';
 import { SettingsService } from '../../core/services/settings.service';
 import { AuthService } from '../../core/services/auth.service';
+import { TaskService } from '../../core/services/task.service';
 import { TimerState } from '../../core/models/timer.model';
 import { Settings } from '../../core/models/settings.model';
-import { DurationPipe } from '../../shared/pipes/duration.pipe';
+import { Task } from '../../core/models/task.model';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterLink, DurationPipe],
+  imports: [CommonModule, RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   standalone: true
@@ -23,16 +24,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   private sessionService = inject(SessionService);
   private settingsService = inject(SettingsService);
   private authService = inject(AuthService);
+  private taskService = inject(TaskService);
   private router = inject(Router);
 
   timerState: TimerState | null = null;
   settings: Settings | null = null;
   dailyGoal = 8; // Default daily goal
+  tasks: Task[] = [];
+  selectedTask: Task | null = null;
+  showTaskSelector = false;
 
   private timerSubscription?: Subscription;
   private settingsSubscription?: Subscription;
 
-  ngOnInit() {
+  async ngOnInit() {
     // Timer state'i dinle
     this.timerSubscription = this.timerService.timerState$.subscribe(state => {
       this.timerState = state;
@@ -45,6 +50,26 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.dailyGoal = settings.dailyGoal || 8;
       }
     });
+
+    // Active taskleri yükle
+    await this.loadTasks();
+  }
+
+  async loadTasks() {
+    try {
+      this.tasks = await this.taskService.getActiveTasks();
+    } catch (error) {
+      console.error('Taskler yüklenirken hata:', error);
+    }
+  }
+
+  selectTask(task: Task) {
+    this.selectedTask = task;
+    this.showTaskSelector = false;
+  }
+
+  toggleTaskSelector() {
+    this.showTaskSelector = !this.showTaskSelector;
   }
 
   ngOnDestroy() {
@@ -58,7 +83,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     // Eğer yeni bir session başlatıyorsak
     if (!this.timerState.currentSession && this.timerState.mode === 'work') {
-      const sessionId = await this.sessionService.createSession();
+      // Seçili task ile session oluştur
+      const sessionId = await this.sessionService.createSession(this.selectedTask?.id);
       this.timerService.setCurrentSession(sessionId);
     }
 

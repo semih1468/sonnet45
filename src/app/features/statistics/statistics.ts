@@ -1,12 +1,13 @@
 // T142-T148: Statistics Component - İstatistikler sayfası
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { StatisticsService } from '../../core/services/statistics.service';
 import { DailyStats, WeeklyStats, MonthlyStats } from '../../core/models/statistics.model';
 
 @Component({
   selector: 'app-statistics',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './statistics.html',
   styleUrl: './statistics.scss',
   standalone: true
@@ -20,6 +21,7 @@ export class StatisticsComponent implements OnInit {
   monthlyStats: MonthlyStats | null = null;
   todayProgress = 0;
   nextBreakIn = 0;
+  timeRange: 'weekly' | 'monthly' = 'weekly';
 
   async ngOnInit() {
     await this.loadStatistics();
@@ -85,5 +87,53 @@ export class StatisticsComponent implements OnInit {
     const today = new Date();
     const date = new Date(dateStr);
     return today.toDateString() === date.toDateString();
+  }
+
+  // Time range değiştirme
+  setTimeRange(range: 'weekly' | 'monthly') {
+    this.timeRange = range;
+  }
+
+  // Chart verilerini getir
+  getChartData() {
+    if (this.timeRange === 'weekly') {
+      return this.weeklyStats?.dailyBreakdown || [];
+    }
+    // Monthly için haftalık breakdown döndür (şimdilik weekly ile aynı)
+    return this.weeklyStats?.dailyBreakdown || [];
+  }
+
+  // Tarih aralığı metni
+  getDateRangeText(): string {
+    const now = new Date();
+    if (this.timeRange === 'weekly') {
+      const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
+      const weekEnd = new Date(now.setDate(weekStart.getDate() + 6));
+      return `${this.formatDate(weekStart)} - ${this.formatDate(weekEnd)}`;
+    } else {
+      const monthNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                         'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+      return monthNames[now.getMonth()] + ' ' + now.getFullYear();
+    }
+  }
+
+  // İlerleme yüzdesi - bar height için
+  getProgressPercentage(sessions: number): number {
+    const max = this.getMaxWeeklyValue();
+    return max > 0 ? (sessions / max) * 100 : 0;
+  }
+
+  // Gün kısaltması
+  getDayAbbr(dateStr: string): string {
+    const days = ['P', 'Pt', 'S', 'Ç', 'P', 'C', 'Ct'];
+    const date = new Date(dateStr);
+    return days[date.getDay()];
+  }
+
+  // Tarih formatlama
+  private formatDate(date: Date): string {
+    const months = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz',
+                   'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+    return `${date.getDate()} ${months[date.getMonth()]}`;
   }
 }

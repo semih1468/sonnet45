@@ -29,18 +29,20 @@ export class TimerService {
   private audioContext?: AudioContext;
 
   constructor() {
-    // İlk ayarları yükle
-    this.loadSettings();
-  }
-
-  private loadSettings() {
-    this.settingsService.settings$.pipe(take(1)).subscribe(settings => {
+    // Settings değişikliklerini sürekli dinle
+    this.settingsService.settings$.subscribe(settings => {
       const state = this.timerStateSubject.value;
       if (!state.isRunning && !state.isPaused) {
         // Sadece timer çalışmıyorsa ayarları uygula
+        const duration = state.mode === 'work'
+          ? settings.workDuration
+          : state.mode === 'shortBreak'
+            ? settings.shortBreakDuration
+            : settings.longBreakDuration;
+
         this.timerStateSubject.next({
           ...state,
-          remainingTime: settings.workDuration * 60
+          remainingTime: duration * 60
         });
       }
     });

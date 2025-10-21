@@ -18,9 +18,15 @@ import { SettingsService } from './settings.service';
   providedIn: 'root'
 })
 export class StatisticsService {
-  private firestore = inject(Firestore);
-  private authService = inject(AuthService);
-  private settingsService = inject(SettingsService);
+  private firestore: Firestore;
+  private authService: AuthService;
+  private settingsService: SettingsService;
+
+  constructor() {
+    this.firestore = inject(Firestore);
+    this.authService = inject(AuthService);
+    this.settingsService = inject(SettingsService);
+  }
 
   // T142: Bugünün istatistiklerini getir
   async getTodayStats(): Promise<DailyStats> {
@@ -248,10 +254,9 @@ export class StatisticsService {
     const endOfDay = new Date(dateStr);
     endOfDay.setHours(23, 59, 59, 999);
 
-    const sessionsRef = collection(this.firestore, 'sessions');
+    const sessionsRef = collection(this.firestore, `users/${user.uid}/sessions`);
     const q = query(
       sessionsRef,
-      where('userId', '==', user.uid),
       where('startTime', '>=', Timestamp.fromDate(startOfDay)),
       where('startTime', '<=', Timestamp.fromDate(endOfDay)),
       orderBy('startTime', 'desc')
@@ -260,7 +265,8 @@ export class StatisticsService {
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({
       id: doc.id,
-      ...doc.data()
+      ...doc.data(),
+      createdAt: doc.data()['startTime']?.toDate() || new Date()
     } as PomodoroSession));
   }
 
@@ -269,10 +275,9 @@ export class StatisticsService {
     const user = this.authService.getCurrentUser();
     if (!user) return [];
 
-    const sessionsRef = collection(this.firestore, 'sessions');
+    const sessionsRef = collection(this.firestore, `users/${user.uid}/sessions`);
     const q = query(
       sessionsRef,
-      where('userId', '==', user.uid),
       where('startTime', '>=', Timestamp.fromDate(startDate)),
       where('startTime', '<=', Timestamp.fromDate(endDate)),
       orderBy('startTime', 'desc')
@@ -281,7 +286,8 @@ export class StatisticsService {
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({
       id: doc.id,
-      ...doc.data()
+      ...doc.data(),
+      createdAt: doc.data()['startTime']?.toDate() || new Date()
     } as PomodoroSession));
   }
 
