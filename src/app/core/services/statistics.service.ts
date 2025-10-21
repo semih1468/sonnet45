@@ -158,6 +158,40 @@ export class StatisticsService {
     };
   }
 
+  // Tüm zamanların istatistiklerini getir
+  async getAllTimeStats(): Promise<{ completedSessions: number; totalWorkTime: number }> {
+    const user = this.authService.getCurrentUser();
+    if (!user) {
+      return { completedSessions: 0, totalWorkTime: 0 };
+    }
+
+    const sessionsRef = collection(this.firestore, `users/${user.uid}/sessions`);
+    const q = query(
+      sessionsRef,
+      where('status', '==', 'completed'),
+      orderBy('startTime', 'desc')
+    );
+
+    const querySnapshot = await getDocs(q);
+    let completedSessions = 0;
+    let totalWorkTime = 0;
+
+    querySnapshot.docs.forEach(doc => {
+      const data = doc.data();
+      if (data['status'] === 'completed') {
+        completedSessions++;
+        totalWorkTime += data['duration'] || 0;
+      }
+    });
+
+    return { completedSessions, totalWorkTime };
+  }
+
+  // Güncel streak'i getir (public metod)
+  async getCurrentStreak(): Promise<number> {
+    return this.calculateStreak();
+  }
+
   // T145: Streak hesaplama
   private async calculateStreak(): Promise<number> {
     const user = this.authService.getCurrentUser();
