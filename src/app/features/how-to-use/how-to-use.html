@@ -1,0 +1,109 @@
+<div class="min-h-screen bg-[#F8F8F8] dark:bg-[#1E1E1E] py-8 px-4">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <button
+        routerLink="/home"
+        class="mb-4 flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-[#FF4B4B] transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        <span class="text-sm">{{ 'common.back' | translate }}</span>
+      </button>
+      <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">{{ 'howToUse.title' | translate }}</h1>
+      <p class="text-slate-600 dark:text-slate-400">{{ 'howToUse.subtitle' | translate }}</p>
+    </div>
+
+    <!-- What is Pomodoro -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 mb-8 shadow-sm">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">{{ 'howToUse.whatIsPomodoro' | translate }}</h2>
+      <p class="text-slate-600 dark:text-slate-400 leading-relaxed">{{ 'howToUse.pomodoroDescription' | translate }}</p>
+    </div>
+
+    <!-- How It Works -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 mb-8 shadow-sm">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">{{ 'howToUse.howItWorks' | translate }}</h2>
+
+      <div class="space-y-6">
+        <div *ngFor="let step of steps" class="flex gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-[#FF4B4B]/10 rounded-full flex items-center justify-center">
+            <span class="text-[#FF4B4B] font-bold">{{ step.number }}</span>
+          </div>
+          <div class="flex-1">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-1">
+              {{ ('howToUse.' + step.key + 'Title') | translate }}
+            </h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+              {{ ('howToUse.' + step.key + 'Description') | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Benefits -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 mb-8 shadow-sm">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">{{ 'howToUse.benefits' | translate }}</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div *ngFor="let benefit of benefits" class="flex gap-3">
+          <div class="flex-shrink-0">
+            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-600 dark:text-green-400">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="flex-1">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-1">
+              {{ ('howToUse.' + benefit.key + 'Title') | translate }}
+            </h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+              {{ ('howToUse.' + benefit.key + 'Description') | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="bg-gradient-to-br from-[#FF4B4B]/10 to-[#FF6B6B]/10 dark:from-[#FF4B4B]/20 dark:to-[#FF6B6B]/20 rounded-2xl p-6 mb-8">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">{{ 'howToUse.tipsTitle' | translate }}</h2>
+
+      <ul class="space-y-3">
+        <li *ngFor="let tip of tips" class="flex items-start gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#FF4B4B] flex-shrink-0 mt-0.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+          </svg>
+          <span class="text-slate-700 dark:text-slate-300 text-sm">{{ ('howToUse.' + tip.key) | translate }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Quick Start Guide -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">{{ 'howToUse.quickStart' | translate }}</h2>
+
+      <div class="space-y-4">
+        <div class="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-900 rounded-xl">
+          <div class="w-8 h-8 bg-[#FF4B4B] rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
+          <p class="text-slate-700 dark:text-slate-300">{{ 'howToUse.quickStep1' | translate }}</p>
+        </div>
+        <div class="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-900 rounded-xl">
+          <div class="w-8 h-8 bg-[#FF4B4B] rounded-full flex items-center justify-center text-white font-bold text-sm">2</div>
+          <p class="text-slate-700 dark:text-slate-300">{{ 'howToUse.quickStep2' | translate }}</p>
+        </div>
+        <div class="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-900 rounded-xl">
+          <div class="w-8 h-8 bg-[#FF4B4B] rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
+          <p class="text-slate-700 dark:text-slate-300">{{ 'howToUse.quickStep3' | translate }}</p>
+        </div>
+      </div>
+
+      <button
+        routerLink="/home"
+        class="w-full mt-6 py-3 px-6 bg-[#FF4B4B] hover:bg-[#FF5C5C] text-white font-medium rounded-xl transition-colors">
+        {{ 'howToUse.startNow' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

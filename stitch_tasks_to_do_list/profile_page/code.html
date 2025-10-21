@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#FFAA7B", // Soft Orange Accent
+              "background-light": "#f8f5f5",
+              "background-dark": "#121212", // Dark Charcoal
+              "text-primary": "#EAEAEA", // Off-white
+              "text-secondary": "#888888", // Muted grey
+              "destructive": "#D9534F", // Muted red
+              "border-color": "#2a2a2a", // Subtle border for dark mode
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {
+                "DEFAULT": "0.25rem", 
+                "lg": "0.5rem", 
+                "xl": "0.75rem", 
+                "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark dark group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="flex items-center p-4">
+<h1 class="text-text-primary text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Profile</h1>
+</header>
+<main class="flex flex-col gap-8 px-4 py-6">
+<!-- Profile Header -->
+<section class="flex w-full flex-col items-center gap-4 text-center">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-32 w-32 border-2 border-primary" data-alt="User profile picture of Elara Vance" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDormhs9kw_IFaLA3FUyc8BAddyjzGxFlQxjLVw6OT24zkGg3jSObCTu2VmHLzY1Bj7kaAqfbdZXzwoKXFbfL8GQfTAYYSDPEBmx_-qJD_42FJL-fe8n07BqxCogowpZzL_GUMW57boQkCwDnjRm5DhDMXiAgT-8Zbsnauob5hnlWz9R8wFasHEH489BPlb7o6_yYAF5AiM8bPP3J_4qSka2RMEuhFYLjjycHQP-I4A7IzfYvPDjmA9cpALSY811b_oVff7d9XSGa06");'></div>
+</div>
+<div class="flex flex-col items-center justify-center">
+<p class="text-text-primary text-2xl font-bold leading-tight tracking-[-0.015em]">Elara Vance</p>
+</div>
+</section>
+<!-- Profile Stats -->
+<section class="flex flex-wrap gap-3">
+<div class="flex min-w-[100px] flex-1 basis-[fit-content] flex-col gap-2 rounded-xl border border-border-color bg-white/5 p-4 items-center text-center">
+<p class="text-primary tracking-light text-3xl font-bold leading-tight">1,245</p>
+<p class="text-text-secondary text-sm font-normal leading-normal">Total Pomodoros</p>
+</div>
+<div class="flex min-w-[100px] flex-1 basis-[fit-content] flex-col gap-2 rounded-xl border border-border-color bg-white/5 p-4 items-center text-center">
+<p class="text-primary tracking-light text-3xl font-bold leading-tight">872</p>
+<p class="text-text-secondary text-sm font-normal leading-normal">Focus Hours</p>
+</div>
+<div class="flex min-w-[100px] flex-1 basis-[fit-content] flex-col gap-2 rounded-xl border border-border-color bg-white/5 p-4 items-center text-center">
+<p class="text-primary tracking-light text-3xl font-bold leading-tight">68</p>
+<p class="text-text-secondary text-sm font-normal leading-normal">Daily Streak</p>
+</div>
+</section>
+<!-- Account Management List -->
+<section class="flex flex-col gap-2">
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-3 min-h-14 justify-between transition-colors hover:bg-white/10">
+<div class="flex items-center gap-4">
+<div class="text-primary flex items-center justify-center rounded-lg bg-primary/20 shrink-0 size-10">
+<span class="material-symbols-outlined">edit</span>
+</div>
+<p class="text-text-primary text-base font-medium leading-normal flex-1 truncate">Edit Profile</p>
+</div>
+<div class="shrink-0">
+<div class="text-text-secondary flex size-7 items-center justify-center">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-3 min-h-14 justify-between transition-colors hover:bg-white/10">
+<div class="flex items-center gap-4">
+<div class="text-primary flex items-center justify-center rounded-lg bg-primary/20 shrink-0 size-10">
+<span class="material-symbols-outlined">settings</span>
+</div>
+<p class="text-text-primary text-base font-medium leading-normal flex-1 truncate">App Settings</p>
+</div>
+<div class="shrink-0">
+<div class="text-text-secondary flex size-7 items-center justify-center">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="flex cursor-pointer items-center gap-4 rounded-lg p-3 min-h-14 justify-between transition-colors hover:bg-destructive/10">
+<div class="flex items-center gap-4">
+<div class="text-destructive flex items-center justify-center rounded-lg bg-destructive/20 shrink-0 size-10">
+<span class="material-symbols-outlined">logout</span>
+</div>
+<p class="text-destructive text-base font-medium leading-normal flex-1 truncate">Logout</p>
+</div>
+<div class="shrink-0">
+<div class="text-text-secondary flex size-7 items-center justify-center">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

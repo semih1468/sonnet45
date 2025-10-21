@@ -43,6 +43,16 @@ export const routes: Routes = [
     canActivate: [authGuard] // T044: Korumalı route
   },
   {
+    path: 'how-to-use',
+    loadComponent: () => import('./features/how-to-use/how-to-use').then(m => m.HowToUseComponent),
+    canActivate: [authGuard] // Korumalı route
+  },
+  {
+    path: 'profile',
+    loadComponent: () => import('./features/profile/profile').then(m => m.ProfileComponent),
+    canActivate: [authGuard] // Korumalı route
+  },
+  {
     path: '**',
     redirectTo: '/home'
   }
