@@ -71,8 +71,8 @@ export class StatisticsComponent implements OnInit {
   // Gün isimlerini getir
   getDayName(dateStr: string): string {
     const date = new Date(dateStr);
-    const days = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
-    return days[date.getDay()];
+    const dayKeys = ['daySun', 'dayMon', 'dayTue', 'dayWed', 'dayThu', 'dayFri', 'daySat'];
+    return this.translateService.instant(`common.${dayKeys[date.getDay()]}`);
   }
 
   // Haftalık chart için maksimum değeri bul
@@ -116,9 +116,10 @@ export class StatisticsComponent implements OnInit {
       const weekEnd = new Date(now.setDate(weekStart.getDate() + 6));
       return `${this.formatDate(weekStart)} - ${this.formatDate(weekEnd)}`;
     } else {
-      const monthNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-                         'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
-      return monthNames[now.getMonth()] + ' ' + now.getFullYear();
+      const monthKeys = ['monthJan', 'monthFeb', 'monthMar', 'monthApr', 'monthMay', 'monthJun',
+                         'monthJul', 'monthAug', 'monthSep', 'monthOct', 'monthNov', 'monthDec'];
+      const monthName = this.translateService.instant(`common.${monthKeys[now.getMonth()]}`);
+      return monthName + ' ' + now.getFullYear();
     }
   }
 
@@ -130,15 +131,16 @@ export class StatisticsComponent implements OnInit {
 
   // Gün kısaltması
   getDayAbbr(dateStr: string): string {
-    const days = ['P', 'Pt', 'S', 'Ç', 'P', 'C', 'Ct'];
+    const dayKeys = ['daySunAbbr', 'dayMonAbbr', 'dayTueAbbr', 'dayWedAbbr', 'dayThuAbbr', 'dayFriAbbr', 'daySatAbbr'];
     const date = new Date(dateStr);
-    return days[date.getDay()];
+    return this.translateService.instant(`common.${dayKeys[date.getDay()]}`);
   }
 
   // Tarih formatlama
   private formatDate(date: Date): string {
-    const months = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz',
-                   'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
-    return `${date.getDate()} ${months[date.getMonth()]}`;
+    const monthKeys = ['monthJanShort', 'monthFebShort', 'monthMarShort', 'monthAprShort', 'monthMayShort', 'monthJunShort',
+                       'monthJulShort', 'monthAugShort', 'monthSepShort', 'monthOctShort', 'monthNovShort', 'monthDecShort'];
+    const monthName = this.translateService.instant(`common.${monthKeys[date.getMonth()]}`);
+    return `${date.getDate()} ${monthName}`;
   }
 }
