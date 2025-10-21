@@ -1,0 +1,250 @@
+<!-- T125-T126-T128-T131: Settings Component HTML Template -->
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex space-x-8">
+          <a routerLink="/home" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Ana Sayfa
+          </a>
+          <a routerLink="/tasks" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Görevler
+          </a>
+          <a routerLink="/history" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Geçmiş
+          </a>
+          <a routerLink="/statistics" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            İstatistikler
+          </a>
+          <a routerLink="/settings" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-red-500">
+            Ayarlar
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Title -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Ayarlar</h1>
+      <p class="mt-1 text-sm text-gray-500">Pomodoro zamanlayıcınızı ve bildirim tercihlerinizi özelleştirin</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+    </div>
+
+    <!-- Settings Form -->
+    <div *ngIf="!isLoading" class="space-y-6">
+      <!-- Success Message -->
+      <div *ngIf="showSuccessMessage" class="rounded-md bg-green-50 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-green-800">Ayarlar başarıyla kaydedildi!</p>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
+        <!-- Timer Settings Section -->
+        <div class="bg-white shadow sm:rounded-lg p-6 mb-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Zamanlayıcı Ayarları</h3>
+
+          <div class="space-y-4">
+            <!-- Work Duration -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">
+                Çalışma Süresi (dakika)
+              </label>
+              <input
+                type="number"
+                formControlName="workDuration"
+                min="5"
+                max="60"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+              <p class="mt-1 text-sm text-gray-500">5-60 dakika arasında</p>
+            </div>
+
+            <!-- Short Break Duration -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">
+                Kısa Mola Süresi (dakika)
+              </label>
+              <input
+                type="number"
+                formControlName="shortBreakDuration"
+                min="1"
+                max="15"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+              <p class="mt-1 text-sm text-gray-500">1-15 dakika arasında</p>
+            </div>
+
+            <!-- Long Break Duration -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">
+                Uzun Mola Süresi (dakika)
+              </label>
+              <input
+                type="number"
+                formControlName="longBreakDuration"
+                min="5"
+                max="30"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+              <p class="mt-1 text-sm text-gray-500">5-30 dakika arasında</p>
+            </div>
+
+            <!-- Long Break Interval -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">
+                Uzun Molaya Kadar Pomodoro Sayısı
+              </label>
+              <input
+                type="number"
+                formControlName="longBreakInterval"
+                min="2"
+                max="10"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+              <p class="mt-1 text-sm text-gray-500">2-10 pomodoro arasında</p>
+            </div>
+
+            <!-- Daily Goal -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">
+                Günlük Hedef (pomodoro)
+              </label>
+              <input
+                type="number"
+                formControlName="dailyGoal"
+                min="1"
+                max="20"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+              <p class="mt-1 text-sm text-gray-500">1-20 pomodoro arasında</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- General Settings Section -->
+        <div class="bg-white shadow sm:rounded-lg p-6 mb-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Genel Ayarlar</h3>
+
+          <div class="space-y-4">
+            <!-- Auto Start Breaks -->
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input
+                  id="autoStartBreaks"
+                  type="checkbox"
+                  formControlName="autoStartBreaks"
+                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="autoStartBreaks" class="font-medium text-gray-700">Molaları Otomatik Başlat</label>
+                <p class="text-gray-500">Çalışma süresi bittiğinde mola otomatik başlar</p>
+              </div>
+            </div>
+
+            <!-- Auto Start Pomodoros -->
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input
+                  id="autoStartPomodoros"
+                  type="checkbox"
+                  formControlName="autoStartPomodoros"
+                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="autoStartPomodoros" class="font-medium text-gray-700">Pomodoro'ları Otomatik Başlat</label>
+                <p class="text-gray-500">Mola bittiğinde bir sonraki pomodoro otomatik başlar</p>
+              </div>
+            </div>
+
+            <!-- Notifications Enabled -->
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input
+                  id="notificationsEnabled"
+                  type="checkbox"
+                  formControlName="notificationsEnabled"
+                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="notificationsEnabled" class="font-medium text-gray-700">Bildirimleri Etkinleştir</label>
+                <p class="text-gray-500">Pomodoro tamamlandığında bildirim al</p>
+              </div>
+            </div>
+
+            <!-- Sound Enabled -->
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input
+                  id="soundEnabled"
+                  type="checkbox"
+                  formControlName="soundEnabled"
+                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="soundEnabled" class="font-medium text-gray-700">Sesleri Etkinleştir</label>
+                <p class="text-gray-500">Pomodoro tamamlandığında ses çal</p>
+              </div>
+            </div>
+
+            <!-- Sound Volume -->
+            <div *ngIf="settingsForm.get('soundEnabled')?.value">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Ses Seviyesi ({{ settingsForm.get('soundVolume')?.value }}%)
+              </label>
+              <input
+                type="range"
+                formControlName="soundVolume"
+                min="0"
+                max="100"
+                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            </div>
+
+            <!-- Dark Mode -->
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input
+                  id="darkMode"
+                  type="checkbox"
+                  formControlName="darkMode"
+                  (change)="toggleDarkMode()"
+                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="darkMode" class="font-medium text-gray-700">Karanlık Mod</label>
+                <p class="text-gray-500">Karanlık renk temasını kullan</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex justify-between">
+          <button
+            type="button"
+            (click)="resetToDefaults()"
+            class="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            Varsayılana Sıfırla
+          </button>
+
+          <button
+            type="submit"
+            [disabled]="settingsForm.invalid || isSaving"
+            class="px-6 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ isSaving ? 'Kaydediliyor...' : 'Kaydet' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>

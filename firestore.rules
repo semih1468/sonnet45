@@ -1,0 +1,48 @@
+// T025: Firestore Security Rules
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if false; // Prevent user deletion via Firestore
+
+      // Sessions subcollection
+      match /sessions/{sessionId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Tasks subcollection
+      match /tasks/{taskId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Settings document
+      match /settings/{document=**} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Stats subcollection
+      match /stats/{statsId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Deny all other paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

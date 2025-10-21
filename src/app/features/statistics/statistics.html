@@ -1,0 +1,227 @@
+<!-- T142-T148: Statistics Component HTML Template -->
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex space-x-8">
+          <a routerLink="/home" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Ana Sayfa
+          </a>
+          <a routerLink="/tasks" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Görevler
+          </a>
+          <a routerLink="/history" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Geçmiş
+          </a>
+          <a routerLink="/statistics" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-red-500">
+            İstatistikler
+          </a>
+          <a routerLink="/settings" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Ayarlar
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Title -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">İstatistikler</h1>
+      <p class="mt-1 text-sm text-gray-500">Pomodoro performans analiziniz ve ilerlemeniz</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+    </div>
+
+    <!-- Statistics Content -->
+    <div *ngIf="!isLoading" class="space-y-6">
+      <!-- Today's Overview Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- Today's Pomodoros -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="p-5">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div class="ml-5 w-0 flex-1">
+                <dl>
+                  <dt class="text-sm font-medium text-gray-500 truncate">Bugün Tamamlanan</dt>
+                  <dd class="flex items-baseline">
+                    <div class="text-2xl font-semibold text-gray-900">
+                      {{ todayStats?.completedSessions || 0 }}
+                    </div>
+                    <div class="ml-2 text-sm text-gray-500">pomodoro</div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Focus Time -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="p-5">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div class="ml-5 w-0 flex-1">
+                <dl>
+                  <dt class="text-sm font-medium text-gray-500 truncate">Odaklanma Süresi</dt>
+                  <dd class="flex items-baseline">
+                    <div class="text-2xl font-semibold text-gray-900">
+                      {{ formatDuration(todayStats?.totalFocusTime || 0) }}
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Streak -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="p-5">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                </svg>
+              </div>
+              <div class="ml-5 w-0 flex-1">
+                <dl>
+                  <dt class="text-sm font-medium text-gray-500 truncate">Seri</dt>
+                  <dd class="flex items-baseline">
+                    <div class="text-2xl font-semibold text-gray-900">
+                      {{ todayStats?.streak || 0 }}
+                    </div>
+                    <div class="ml-2 text-sm text-gray-500">gün</div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Goal Progress -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="p-5">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div class="ml-5 w-0 flex-1">
+                <dl>
+                  <dt class="text-sm font-medium text-gray-500 truncate">Günlük Hedef</dt>
+                  <dd class="flex items-baseline">
+                    <div class="text-2xl font-semibold text-gray-900">
+                      {{ todayProgress }}%
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Chart -->
+      <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Haftalık İlerleme</h3>
+        <div class="flex items-end justify-between h-64 space-x-2">
+          <div *ngFor="let day of weeklyStats?.dailyBreakdown" class="flex-1 flex flex-col items-center">
+            <div class="flex-1 w-full flex items-end justify-center mb-2">
+              <div
+                [style.height.%]="getBarHeight(day.completedSessions)"
+                [class]="isToday(day.date) ? 'bg-red-500' : 'bg-gray-300'"
+                class="w-full rounded-t-md transition-all hover:opacity-80 flex items-end justify-center pb-2">
+                <span *ngIf="day.completedSessions > 0" class="text-xs text-white font-medium">
+                  {{ day.completedSessions }}
+                </span>
+              </div>
+            </div>
+            <div class="text-xs text-gray-500 mt-2">{{ getDayName(day.date) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly & Monthly Stats Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Weekly Stats -->
+        <div class="bg-white shadow rounded-lg p-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Bu Hafta</h3>
+          <dl class="space-y-3">
+            <div class="flex justify-between">
+              <dt class="text-sm font-medium text-gray-500">Toplam Pomodoro</dt>
+              <dd class="text-sm text-gray-900 font-semibold">{{ weeklyStats?.totalSessions || 0 }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-sm font-medium text-gray-500">Toplam Odaklanma</dt>
+              <dd class="text-sm text-gray-900 font-semibold">{{ formatDuration(weeklyStats?.totalFocusTime || 0) }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-sm font-medium text-gray-500">Ortalama Süre</dt>
+              <dd class="text-sm text-gray-900 font-semibold">{{ formatDuration(weeklyStats?.averageSessionDuration || 0) }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-sm font-medium text-gray-500">Seri</dt>
+              <dd class="text-sm text-gray-900 font-semibold">{{ weeklyStats?.currentStreak || 0 }} gün</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Monthly Stats -->
+        <div class="bg-white shadow rounded-lg p-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Bu Ay</h3>
+          <dl class="space-y-3">
+            <div class="flex justify-between">
+              <dt class="text-sm font-medium text-gray-500">Toplam Pomodoro</dt>
+              <dd class="text-sm text-gray-900 font-semibold">{{ monthlyStats?.totalSessions || 0 }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-sm font-medium text-gray-500">Toplam Odaklanma</dt>
+              <dd class="text-sm text-gray-900 font-semibold">{{ formatDuration(monthlyStats?.totalFocusTime || 0) }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-sm font-medium text-gray-500">Ortalama Süre</dt>
+              <dd class="text-sm text-gray-900 font-semibold">{{ formatDuration(monthlyStats?.averageSessionDuration || 0) }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-sm font-medium text-gray-500">En İyi Seri</dt>
+              <dd class="text-sm text-gray-900 font-semibold">{{ monthlyStats?.bestStreak || 0 }} gün</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Next Break Info -->
+      <div *ngIf="nextBreakIn > 0" class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-blue-700">
+              Uzun molaya <span class="font-semibold">{{ nextBreakIn }}</span> pomodoro kaldı!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

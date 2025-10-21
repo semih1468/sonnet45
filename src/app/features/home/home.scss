@@ -1,0 +1,43 @@
+// T058: Home Component Stillendirme
+
+// Mode-specific backgrounds
+.mode-work {
+  background: linear-gradient(135deg, #fef3f3 0%, #ffffff 100%);
+}
+
+.mode-short-break {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+.mode-long-break {
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+}
+
+// Timer display animations
+.timer-display {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Button hover effects
+button {
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}

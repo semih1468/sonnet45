@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -File .specify/scripts/powershell/create-new-feature.ps1 -Json \"tasarımı hazır ola pomodoro dosyalarımı firebase.txt entegrasyonu yapılarak kodlamsını yapmamız gerekiyor maddeleri açıklamaları türkçe yap\" -ShortName \"pomodoro-firebase-integration\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

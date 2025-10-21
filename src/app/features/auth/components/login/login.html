@@ -1,0 +1,79 @@
+<!-- T031: Login Component HTML Template -->
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Pomodoro Timer
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Hesabınıza giriş yapın
+      </p>
+    </div>
+
+    <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Error Message -->
+      <app-error-message [message]="errorMessage" [show]="!!errorMessage"></app-error-message>
+
+      <div class="rounded-md shadow-sm space-y-4">
+        <!-- Email Input -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">
+            E-posta Adresi
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+            [class.border-red-500]="email?.invalid && email?.touched"
+            placeholder="ornek@email.com">
+          <p *ngIf="email?.invalid && email?.touched" class="mt-1 text-sm text-red-600">
+            <span *ngIf="email?.errors?.['required']">E-posta adresi gereklidir</span>
+            <span *ngIf="email?.errors?.['email']">Geçerli bir e-posta adresi girin</span>
+          </p>
+        </div>
+
+        <!-- Password Input -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">
+            Şifre
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            formControlName="password"
+            autocomplete="current-password"
+            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+            [class.border-red-500]="password?.invalid && password?.touched"
+            placeholder="••••••••">
+          <p *ngIf="password?.invalid && password?.touched" class="mt-1 text-sm text-red-600">
+            <span *ngIf="password?.errors?.['required']">Şifre gereklidir</span>
+            <span *ngIf="password?.errors?.['minlength']">Şifre en az 6 karakter olmalıdır</span>
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          [disabled]="isLoading"
+          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed">
+          <span *ngIf="!isLoading">Giriş Yap</span>
+          <app-loading-spinner *ngIf="isLoading" size="small" color="white"></app-loading-spinner>
+        </button>
+      </div>
+
+      <div class="text-center">
+        <p class="text-sm text-gray-600">
+          Hesabınız yok mu?
+          <a routerLink="/signup" class="font-medium text-primary-600 hover:text-primary-500">
+            Kayıt Olun
+          </a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,211 @@
+<!-- T106: Tasks Component HTML Template -->
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex space-x-8">
+          <a routerLink="/home" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Ana Sayfa
+          </a>
+          <a routerLink="/tasks" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-red-500">
+            Görevler
+          </a>
+          <a routerLink="/history" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Geçmiş
+          </a>
+          <a routerLink="/statistics" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            İstatistikler
+          </a>
+          <a routerLink="/settings" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Ayarlar
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Title & Add Button -->
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Görevler</h1>
+      <button
+        (click)="toggleAddForm()"
+        class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700">
+        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        Yeni Görev
+      </button>
+    </div>
+
+    <!-- Add Task Form -->
+    <div *ngIf="showAddForm" class="bg-white shadow sm:rounded-lg p-6 mb-8">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Yeni Görev Ekle</h3>
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-1 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Başlık *</label>
+            <input
+              type="text"
+              formControlName="title"
+              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+              placeholder="Görev başlığı">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Açıklama</label>
+            <textarea
+              formControlName="description"
+              rows="3"
+              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+              placeholder="Görev açıklaması"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Öncelik</label>
+              <select
+                formControlName="priority"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                <option value="low">Düşük</option>
+                <option value="medium">Orta</option>
+                <option value="high">Yüksek</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Tahmini Pomodoro</label>
+              <input
+                type="number"
+                formControlName="estimatedPomodoros"
+                min="1"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Bitiş Tarihi</label>
+              <input
+                type="date"
+                formControlName="dueDate"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+            </div>
+          </div>
+
+          <div class="flex justify-end space-x-3">
+            <button
+              type="button"
+              (click)="toggleAddForm()"
+              class="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+              İptal
+            </button>
+            <button
+              type="submit"
+              [disabled]="taskForm.invalid"
+              class="px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed">
+              Ekle
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- View Mode Tabs -->
+    <div class="border-b border-gray-200 mb-6">
+      <nav class="-mb-px flex space-x-8">
+        <button
+          (click)="changeViewMode('active')"
+          [class]="viewMode === 'active' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+          Aktif
+        </button>
+        <button
+          (click)="changeViewMode('completed')"
+          [class]="viewMode === 'completed' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+          Tamamlanan
+        </button>
+        <button
+          (click)="changeViewMode('all')"
+          [class]="viewMode === 'all' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+          Tümü
+        </button>
+      </nav>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && tasks.length === 0" class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">Görev bulunmuyor</h3>
+      <p class="mt-1 text-sm text-gray-500">Yeni bir görev ekleyerek başlayın.</p>
+    </div>
+
+    <!-- Tasks List -->
+    <div *ngIf="!isLoading && tasks.length > 0" class="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul class="divide-y divide-gray-200">
+        <li *ngFor="let task of tasks" class="px-6 py-4 hover:bg-gray-50">
+          <div class="flex items-center justify-between">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-medium text-gray-900 truncate">{{ task.title }}</h3>
+                <span [class]="getPriorityColor(task.priority)" class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                  {{ getPriorityText(task.priority) }}
+                </span>
+              </div>
+
+              <p *ngIf="task.description" class="mt-1 text-sm text-gray-500">{{ task.description }}</p>
+
+              <div class="mt-2 flex items-center text-sm text-gray-500">
+                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                </svg>
+                {{ task.completedPomodoros }} / {{ task.estimatedPomodoros }} Pomodoro
+
+                <span *ngIf="task.dueDate" class="ml-4 flex items-center" [class.text-red-600]="isOverdue(task)">
+                  <svg class="flex-shrink-0 mr-1.5 h-5 w-5" [class.text-red-400]="isOverdue(task)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                  </svg>
+                  {{ formatDate(task.dueDate) }}
+                </span>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="mt-3">
+                <div class="relative pt-1">
+                  <div class="overflow-hidden h-2 text-xs flex rounded bg-gray-200">
+                    <div
+                      [style.width.%]="getProgressPercentage(task)"
+                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ml-4 flex-shrink-0 flex space-x-2">
+              <button
+                *ngIf="task.status === 'active'"
+                (click)="markAsCompleted(task.id)"
+                class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                ✓ Tamamla
+              </button>
+              <button
+                (click)="deleteTask(task.id)"
+                class="inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:bg-red-50">
+                Sil
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </main>
+</div>

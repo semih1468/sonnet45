@@ -1,0 +1,125 @@
+<!-- T073: History Component HTML Template -->
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex space-x-8">
+          <a routerLink="/home" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-gray-300">
+            Ana Sayfa
+          </a>
+          <a routerLink="/tasks" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Görevler
+          </a>
+          <a routerLink="/history" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-red-500">
+            Geçmiş
+          </a>
+          <a routerLink="/statistics" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            İstatistikler
+          </a>
+          <a routerLink="/settings" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">
+            Ayarlar
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Title & View Mode Selector -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-4">Pomodoro Geçmişi</h1>
+
+      <!-- View Mode Tabs -->
+      <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8">
+          <button
+            (click)="changeViewMode('today')"
+            [class]="viewMode === 'today' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            Bugün
+          </button>
+          <button
+            (click)="changeViewMode('week')"
+            [class]="viewMode === 'week' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            Bu Hafta
+          </button>
+          <button
+            (click)="changeViewMode('month')"
+            [class]="viewMode === 'month' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            Bu Ay
+          </button>
+          <button
+            (click)="changeViewMode('all')"
+            [class]="viewMode === 'all' ? 'border-red-500 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            Tümü
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-sm font-medium text-gray-500 mb-2">Tamamlanan Pomodoro</h3>
+        <p class="text-3xl font-bold text-gray-900">{{ getTotalCompletedSessions() }}</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-sm font-medium text-gray-500 mb-2">Toplam Çalışma Süresi</h3>
+        <p class="text-3xl font-bold text-gray-900">{{ getTotalWorkTime() | number:'1.0-0' }} dk</p>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && sessions.length === 0" class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">Henüz pomodoro bulunmuyor</h3>
+      <p class="mt-1 text-sm text-gray-500">İlk pomodoro'nuzu başlatarak başlayın.</p>
+      <div class="mt-6">
+        <a routerLink="/home" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700">
+          Pomodoro Başlat
+        </a>
+      </div>
+    </div>
+
+    <!-- Sessions List -->
+    <div *ngIf="!isLoading && sessions.length > 0" class="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul class="divide-y divide-gray-200">
+        <li *ngFor="let session of sessions" class="px-6 py-4 hover:bg-gray-50">
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <p class="text-sm font-medium text-gray-900">
+                  {{ getSessionDate(session) }}
+                </p>
+                <span [class]="getStatusClass(session.status)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                  {{ getStatusText(session.status) }}
+                </span>
+              </div>
+              <div class="mt-2 flex items-center text-sm text-gray-500">
+                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                </svg>
+                {{ getSessionDuration(session) }} dakika
+              </div>
+              <div *ngIf="session.notes" class="mt-2 text-sm text-gray-500">
+                {{ session.notes }}
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </main>
+</div>
