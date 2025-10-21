@@ -3,13 +3,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, LoadingSpinnerComponent, ErrorMessageComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, TranslatePipe, LoadingSpinnerComponent, ErrorMessageComponent],
   templateUrl: './login.html',
   styleUrl: './login.scss',
   standalone: true

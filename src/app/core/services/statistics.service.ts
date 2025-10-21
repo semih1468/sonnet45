@@ -1,5 +1,6 @@
 // T141: Statistics Service - İstatistik hesaplamaları servisi
 import { Injectable, inject } from '@angular/core';
+import { Firestore } from '@angular/fire/firestore';
 import {
   collection,
   query,
@@ -7,8 +8,7 @@ import {
   orderBy,
   getDocs,
   Timestamp
-} from '@angular/fire/firestore';
-import { Firestore } from '@angular/fire/firestore';
+} from 'firebase/firestore';
 import { AuthService } from './auth.service';
 import { PomodoroSession } from '../models/session.model';
 import { DailyStats, WeeklyStats, MonthlyStats } from '../models/statistics.model';

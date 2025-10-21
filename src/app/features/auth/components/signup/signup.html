@@ -8,7 +8,7 @@
           <path fill-rule="evenodd" d="M12.75 2.75a.75.75 0 00-1.5 0V4.5H9.276a1.75 1.75 0 00-.985.303L6.596 5.957A.25.25 0 016.455 6H2.353a.75.75 0 100 1.5H3.93L.563 15.18a.762.762 0 00.21.88c.08.064.161.125.309.221.186.121.452.278.792.433.68.311 1.662.62 2.876.62a6.919 6.919 0 002.876-.62c.34-.155.606-.312.792-.433.15-.097.23-.158.31-.223a.75.75 0 00.209-.878L5.569 7.5h.886c.351 0 .694-.106.984-.303l1.695-1.154A.25.25 0 019.275 6h1.975V4.5H12.75V2.75z" clip-rule="evenodd" />
         </svg>
       </div>
-      <h1 class="text-3xl font-bold text-[#1f2937] dark:text-[#E2E8F0]">Hesap Oluşturun</h1>
+      <h1 class="text-3xl font-bold text-[#1f2937] dark:text-[#E2E8F0]">{{ 'auth.createAccount' | translate }}</h1>
     </div>
 
     <form class="mt-8 space-y-6" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
@@ -19,28 +19,28 @@
         <!-- Full Name Input -->
         <div>
           <label class="flex flex-col min-w-40 flex-1">
-            <p class="text-sm font-medium text-[#1f2937] dark:text-[#E2E8F0] pb-2">Ad Soyad</p>
+            <p class="text-sm font-medium text-[#1f2937] dark:text-[#E2E8F0] pb-2">{{ 'auth.fullName' | translate }}</p>
             <input
               formControlName="fullName"
               class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1f2937] dark:text-[#E2E8F0] focus:outline-0 focus:ring-2 focus:ring-[#4FD1C5] border-none bg-gray-200 dark:bg-[#1F2937] h-14 placeholder:text-gray-500 dark:placeholder:text-[#A0AEC0] p-4 text-base font-normal leading-normal"
-              placeholder="Adınızı ve soyadınızı girin">
+              [placeholder]="'auth.fullNamePlaceholder' | translate">
           </label>
         </div>
 
         <!-- Email Input -->
         <div class="pt-4">
           <label class="flex flex-col min-w-40 flex-1">
-            <p class="text-sm font-medium text-[#1f2937] dark:text-[#E2E8F0] pb-2">E-posta Adresi</p>
+            <p class="text-sm font-medium text-[#1f2937] dark:text-[#E2E8F0] pb-2">{{ 'auth.email' | translate }}</p>
             <input
               formControlName="email"
               type="email"
               autocomplete="email"
               class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1f2937] dark:text-[#E2E8F0] focus:outline-0 focus:ring-2 focus:ring-[#4FD1C5] border-none bg-gray-200 dark:bg-[#1F2937] h-14 placeholder:text-gray-500 dark:placeholder:text-[#A0AEC0] p-4 text-base font-normal leading-normal"
               [class.border-red-500]="email?.invalid && email?.touched"
-              placeholder="E-posta adresinizi girin">
+              [placeholder]="'auth.emailPlaceholder' | translate">
             <p *ngIf="email?.invalid && email?.touched" class="mt-1 text-sm text-red-500">
-              <span *ngIf="email?.errors?.['required']">E-posta adresi gereklidir</span>
-              <span *ngIf="email?.errors?.['email']">Geçerli bir e-posta adresi girin</span>
+              <span *ngIf="email?.errors?.['required']">{{ 'auth.emailRequired' | translate }}</span>
+              <span *ngIf="email?.errors?.['email']">{{ 'auth.invalidEmail' | translate }}</span>
             </p>
           </label>
         </div>
@@ -48,7 +48,7 @@
         <!-- Password Input -->
         <div class="pt-4">
           <label class="flex flex-col min-w-40 flex-1">
-            <p class="text-sm font-medium text-[#1f2937] dark:text-[#E2E8F0] pb-2">Şifre</p>
+            <p class="text-sm font-medium text-[#1f2937] dark:text-[#E2E8F0] pb-2">{{ 'auth.password' | translate }}</p>
             <div class="flex w-full flex-1 items-stretch rounded-lg">
               <input
                 formControlName="password"
@@ -56,7 +56,7 @@
                 autocomplete="new-password"
                 class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1f2937] dark:text-[#E2E8F0] focus:outline-0 focus:ring-2 focus:ring-[#4FD1C5] border-none bg-gray-200 dark:bg-[#1F2937] h-14 placeholder:text-gray-500 dark:placeholder:text-[#A0AEC0] p-4 rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal"
                 [class.border-red-500]="password?.invalid && password?.touched"
-                placeholder="Şifrenizi girin">
+                [placeholder]="'auth.passwordPlaceholder' | translate">
               <button
                 type="button"
                 (click)="togglePassword()"
@@ -75,8 +75,8 @@
               </button>
             </div>
             <p *ngIf="password?.invalid && password?.touched" class="mt-1 text-sm text-red-500">
-              <span *ngIf="password?.errors?.['required']">Şifre gereklidir</span>
-              <span *ngIf="password?.errors?.['minlength']">Şifre en az 6 karakter olmalıdır</span>
+              <span *ngIf="password?.errors?.['required']">{{ 'auth.passwordRequired' | translate }}</span>
+              <span *ngIf="password?.errors?.['minlength']">{{ 'auth.passwordMinLength' | translate }}</span>
             </p>
           </label>
         </div>
@@ -84,16 +84,16 @@
         <!-- Confirm Password Input -->
         <div class="pt-4">
           <label class="flex flex-col min-w-40 flex-1">
-            <p class="text-sm font-medium text-[#1f2937] dark:text-[#E2E8F0] pb-2">Şifre Tekrarı</p>
+            <p class="text-sm font-medium text-[#1f2937] dark:text-[#E2E8F0] pb-2">{{ 'auth.confirmPassword' | translate }}</p>
             <input
               formControlName="confirmPassword"
               [type]="showPassword ? 'text' : 'password'"
               autocomplete="new-password"
               class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1f2937] dark:text-[#E2E8F0] focus:outline-0 focus:ring-2 focus:ring-[#4FD1C5] border-none bg-gray-200 dark:bg-[#1F2937] h-14 placeholder:text-gray-500 dark:placeholder:text-[#A0AEC0] p-4 text-base font-normal leading-normal"
               [class.border-red-500]="confirmPassword?.invalid && confirmPassword?.touched"
-              placeholder="Şifrenizi tekrar girin">
+              [placeholder]="'auth.confirmPasswordPlaceholder' | translate">
             <p *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="mt-1 text-sm text-red-500">
-              <span *ngIf="confirmPassword?.errors?.['required']">Şifre tekrarı gereklidir</span>
+              <span *ngIf="confirmPassword?.errors?.['required']">{{ 'auth.confirmPasswordRequired' | translate }}</span>
             </p>
           </label>
         </div>
@@ -105,16 +105,16 @@
           type="submit"
           [disabled]="isLoading || signupForm.invalid"
           class="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-5 bg-[#4FD1C5] text-[#121212] text-base font-bold leading-normal tracking-wide transition-transform duration-200 hover:scale-105 active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed">
-          <span *ngIf="!isLoading" class="truncate">Kayıt Ol</span>
+          <span *ngIf="!isLoading" class="truncate">{{ 'auth.signup' | translate }}</span>
           <app-loading-spinner *ngIf="isLoading" size="small" color="white"></app-loading-spinner>
         </button>
       </div>
 
       <!-- Login Link -->
       <p class="mt-6 text-center text-sm text-gray-600 dark:text-[#A0AEC0]">
-        Zaten hesabınız var mı?
+        {{ 'auth.haveAccount' | translate }}
         <a routerLink="/login" class="font-medium text-[#4FD1C5] hover:text-[#4FD1C5]/80">
-          Giriş Yapın
+          {{ 'auth.loginHere' | translate }}
         </a>
       </p>
     </form>

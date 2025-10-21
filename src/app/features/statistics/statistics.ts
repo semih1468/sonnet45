@@ -2,18 +2,20 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { StatisticsService } from '../../core/services/statistics.service';
 import { DailyStats, WeeklyStats, MonthlyStats } from '../../core/models/statistics.model';
 
 @Component({
   selector: 'app-statistics',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './statistics.html',
   styleUrl: './statistics.scss',
   standalone: true
 })
 export class StatisticsComponent implements OnInit {
   private statisticsService = inject(StatisticsService);
+  private translateService = inject(TranslateService);
 
   isLoading = true;
   todayStats: DailyStats | null = null;
@@ -57,10 +59,13 @@ export class StatisticsComponent implements OnInit {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
 
+    const hourShort = this.translateService.instant('common.hourShort');
+    const minuteShort = this.translateService.instant('common.minuteShort');
+
     if (hours > 0) {
-      return `${hours}s ${minutes}dk`;
+      return `${hours}${hourShort} ${minutes}${minuteShort}`;
     }
-    return `${minutes}dk`;
+    return `${minutes}${minuteShort}`;
   }
 
   // Gün isimlerini getir

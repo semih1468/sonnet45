@@ -8,7 +8,7 @@
         <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" />
       </svg>
     </button>
-    <h2 class="text-gray-200 text-xl font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Görevlerim</h2>
+    <h2 class="text-gray-200 text-xl font-bold leading-tight tracking-[-0.015em] flex-1 text-center">{{ 'tasks.myTasks' | translate }}</h2>
     <div class="flex w-12 items-center justify-end">
       <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-transparent text-gray-400">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -32,8 +32,8 @@
           <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625zM7.5 15a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 017.5 15zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H8.25z" clip-rule="evenodd" />
           <path d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z" />
         </svg>
-        <p class="text-gray-400 text-lg mt-4">Odaklanmaya hazır mısınız?</p>
-        <p class="text-gray-500 text-base">Başlamak için ilk görevinizi ekleyin!</p>
+        <p class="text-gray-400 text-lg mt-4">{{ 'tasks.readyToFocus' | translate }}</p>
+        <p class="text-gray-500 text-base">{{ 'tasks.addFirstTaskPrompt' | translate }}</p>
       </div>
     </div>
 
@@ -81,7 +81,7 @@
             <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
             <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
           </svg>
-          Düzenle
+          {{ 'common.edit' | translate }}
         </button>
         <button
           (click)="deleteTask(task)"
@@ -89,7 +89,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
             <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
           </svg>
-          Sil
+          {{ 'common.delete' | translate }}
         </button>
       </div>
     </div>
@@ -109,16 +109,16 @@
   <!-- Add Task Modal -->
   <div *ngIf="showAddForm" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
     <div class="bg-[#2C2C2C] rounded-xl p-6 w-full max-w-sm mx-auto shadow-xl">
-      <h3 class="text-lg font-semibold text-gray-200 mb-4">Yeni görev ekle</h3>
+      <h3 class="text-lg font-semibold text-gray-200 mb-4">{{ 'tasks.addTask' | translate }}</h3>
       <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
         <input
           formControlName="title"
           class="w-full bg-[#3a3a3a] border-gray-600 rounded-lg text-gray-200 placeholder-gray-500 focus:ring-[#42A5F5] focus:border-[#42A5F5] px-3 py-2"
-          placeholder="Görevinizi girin..."
+          [placeholder]="'tasks.taskNamePlaceholder' | translate"
           type="text">
 
         <div class="mt-4">
-          <label class="text-sm text-gray-400 mb-1 block">Tahmini Pomodoro</label>
+          <label class="text-sm text-gray-400 mb-1 block">{{ 'tasks.estimatedPomodoros' | translate }}</label>
           <input
             formControlName="estimatedPomodoros"
             type="number"
@@ -131,13 +131,13 @@
             type="button"
             (click)="toggleAddForm()"
             class="px-4 py-2 rounded-lg text-gray-300 hover:bg-gray-700 transition-colors">
-            İptal
+            {{ 'common.cancel' | translate }}
           </button>
           <button
             type="submit"
             [disabled]="taskForm.invalid"
             class="px-4 py-2 rounded-lg bg-[#42A5F5] text-white font-semibold hover:bg-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-            Kaydet
+            {{ 'common.save' | translate }}
           </button>
         </div>
       </form>

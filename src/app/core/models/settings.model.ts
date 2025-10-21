@@ -1,3 +1,5 @@
+import { SupportedLanguageCode } from './language.model';
+
 // T014: User Settings Model
 export interface Settings {
   workDuration: number;              // dakika cinsinden, default: 25
@@ -11,6 +13,7 @@ export interface Settings {
   notificationsEnabled: boolean;     // default: true
   darkMode: boolean;                 // default: false
   dailyGoal: number;                 // günlük hedef pomodoro sayısı, default: 8
+  language?: SupportedLanguageCode;  // user's preferred language, default: 'tr'
 }
 
 // Backward compatibility

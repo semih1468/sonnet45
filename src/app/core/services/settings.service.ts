@@ -4,6 +4,7 @@ import { Firestore, doc, getDoc, setDoc, onSnapshot } from '@angular/fire/firest
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Settings } from '../models/settings.model';
+import { SupportedLanguageCode } from '../models/language.model';
 
 @Injectable({
   providedIn: 'root'
@@ -92,6 +93,35 @@ export class SettingsService {
   // Mevcut ayarları al
   getCurrentSettings(): Settings {
     return this.settingsSubject.value;
+  }
+
+  /**
+   * Get user settings (async version for APP_INITIALIZER)
+   * Returns promise with current settings or null if not logged in
+   */
+  async getSettings(): Promise<Settings | null> {
+    const user = await this.authService.getCurrentUser();
+
+    if (!user) {
+      return null;
+    }
+
+    const settingsRef = doc(this.firestore, `users/${user.uid}/settings/preferences`);
+    const snapshot = await getDoc(settingsRef);
+
+    if (snapshot.exists()) {
+      return snapshot.data() as Settings;
+    }
+
+    return null;
+  }
+
+  /**
+   * Update user's language preference
+   * @param languageCode - The language code to set (tr or en)
+   */
+  async updateLanguage(languageCode: SupportedLanguageCode): Promise<void> {
+    await this.saveSettings({ language: languageCode });
   }
 
   // Cleanup

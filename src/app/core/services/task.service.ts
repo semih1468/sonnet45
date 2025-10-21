@@ -1,5 +1,6 @@
 // T097: Task Service - Görev yönetimi servisi
 import { Injectable, inject } from '@angular/core';
+import { Firestore } from '@angular/fire/firestore';
 import {
   collection,
   addDoc,
@@ -12,8 +13,7 @@ import {
   getDocs,
   Timestamp,
   serverTimestamp
-} from '@angular/fire/firestore';
-import { Firestore } from '@angular/fire/firestore';
+} from 'firebase/firestore';
 import { AuthService } from './auth.service';
 import { Task, CreateTaskDto, UpdateTaskDto, TaskStatus } from '../models/task.model';
 

@@ -7,7 +7,7 @@
         <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" />
       </svg>
     </button>
-    <h1 class="text-[#1E1E1E] dark:text-[#F4F4F4] text-xl font-bold leading-tight tracking-tight flex-1 text-center">Geçmiş</h1>
+    <h1 class="text-[#1E1E1E] dark:text-[#F4F4F4] text-xl font-bold leading-tight tracking-tight flex-1 text-center">{{ 'history.title' | translate }}</h1>
     <div class="size-12 shrink-0"></div>
   </div>
 
@@ -15,7 +15,7 @@
   <div class="flex px-4 py-3 bg-white dark:bg-[#1E1E1E]">
     <div class="flex h-10 flex-1 items-center justify-center rounded-lg bg-[#F3F4F6] dark:bg-[#2C2C2E] p-1">
       <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1E1E1E] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#1E1E1E] dark:has-[:checked]:text-white text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal">
-        <span class="truncate">Bugün</span>
+        <span class="truncate">{{ 'history.today' | translate }}</span>
         <input
           [checked]="viewMode === 'today'"
           class="invisible w-0"
@@ -25,7 +25,7 @@
           (change)="changeViewMode('today')"/>
       </label>
       <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1E1E1E] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#1E1E1E] dark:has-[:checked]:text-white text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal">
-        <span class="truncate">Bu Hafta</span>
+        <span class="truncate">{{ 'history.thisWeek' | translate }}</span>
         <input
           [checked]="viewMode === 'week'"
           class="invisible w-0"
@@ -35,7 +35,7 @@
           (change)="changeViewMode('week')"/>
       </label>
       <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1E1E1E] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#1E1E1E] dark:has-[:checked]:text-white text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal">
-        <span class="truncate">Bu Ay</span>
+        <span class="truncate">{{ 'history.thisMonth' | translate }}</span>
         <input
           [checked]="viewMode === 'month'"
           class="invisible w-0"
@@ -45,7 +45,7 @@
           (change)="changeViewMode('month')"/>
       </label>
       <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1E1E1E] has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-[#1E1E1E] dark:has-[:checked]:text-white text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal">
-        <span class="truncate">Tümü</span>
+        <span class="truncate">{{ 'history.all' | translate }}</span>
         <input
           [checked]="viewMode === 'all'"
           class="invisible w-0"
@@ -67,15 +67,15 @@
     <!-- Summary Stats -->
     <div class="flex flex-wrap gap-4 px-4 py-6">
       <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-white dark:bg-[#2C2C2E]">
-        <p class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">Tamamlanan</p>
+        <p class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">{{ 'history.completed' | translate }}</p>
         <p class="text-[#1E1E1E] dark:text-white tracking-light text-2xl font-bold leading-tight">
           {{ getTotalCompletedSessions() }}
         </p>
       </div>
       <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-white dark:bg-[#2C2C2E]">
-        <p class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">Toplam Süre</p>
+        <p class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">{{ 'history.totalDuration' | translate }}</p>
         <p class="text-[#1E1E1E] dark:text-white tracking-light text-2xl font-bold leading-tight">
-          {{ getTotalWorkTime() | number:'1.0-0' }} dk
+          {{ getTotalWorkTime() | number:'1.0-0' }} {{ 'common.minute' | translate }}
         </p>
       </div>
     </div>
@@ -87,12 +87,12 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Henüz pomodoro bulunmuyor</h3>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">İlk pomodoro'nuzu başlatarak başlayın</p>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">{{ 'history.noHistory' | translate }}</h3>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{{ 'history.startWorking' | translate }}</p>
       <button
         routerLink="/home"
         class="flex cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#06D6A0] text-[#1E1E1E] text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#06D6A0]/90 transition-colors">
-        <span class="truncate">Pomodoro Başlat</span>
+        <span class="truncate">{{ 'statistics.startSession' | translate }}</span>
       </button>
     </div>
 
@@ -117,7 +117,7 @@
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span>{{ getSessionDuration(session) }} dakika</span>
+                  <span>{{ getSessionDuration(session) }} {{ 'common.minute' | translate }}</span>
                 </div>
                 <p *ngIf="session.notes" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                   {{ session.notes }}

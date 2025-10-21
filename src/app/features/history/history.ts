@@ -2,18 +2,20 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SessionService } from '../../core/services/session.service';
 import { Session } from '../../core/models/session.model';
 
 @Component({
   selector: 'app-history',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './history.html',
   styleUrl: './history.scss',
   standalone: true
 })
 export class HistoryComponent implements OnInit {
   private sessionService = inject(SessionService);
+  private translateService = inject(TranslateService);
 
   sessions: Session[] = [];
   isLoading = true;
@@ -103,11 +105,11 @@ export class HistoryComponent implements OnInit {
   getStatusText(status: string): string {
     switch (status) {
       case 'completed':
-        return 'Tamamlandı';
+        return this.translateService.instant('history.statusCompleted');
       case 'active':
-        return 'Aktif';
+        return this.translateService.instant('history.statusActive');
       case 'cancelled':
-        return 'İptal';
+        return this.translateService.instant('history.statusCancelled');
       default:
         return status;
     }

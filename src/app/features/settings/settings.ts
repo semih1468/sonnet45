@@ -3,18 +3,22 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { SettingsService } from '../../core/services/settings.service';
+import { LanguageService } from '../../core/services/language.service';
 import { Settings } from '../../core/models/settings.model';
+import { Language } from '../../core/models/language.model';
 
 @Component({
   selector: 'app-settings',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, TranslatePipe],
   templateUrl: './settings.html',
   styleUrl: './settings.scss',
   standalone: true
 })
 export class SettingsComponent implements OnInit {
   private settingsService = inject(SettingsService);
+  private languageService = inject(LanguageService);
   private fb = inject(FormBuilder);
 
   // Math for template usage
@@ -23,6 +27,11 @@ export class SettingsComponent implements OnInit {
   isLoading = false;
   isSaving = false;
   showSuccessMessage = false;
+
+  // Language selection
+  availableLanguages: readonly Language[] = this.languageService.availableLanguages;
+  currentLanguage$ = this.languageService.currentLanguage$;
+  isChangingLanguage$ = this.languageService.isChanging$;
 
   // T128-T130: Settings Form
   settingsForm: FormGroup = this.fb.group({
@@ -149,5 +158,17 @@ export class SettingsComponent implements OnInit {
   incrementDailyGoal() {
     const currentValue = this.settingsForm.get('dailyGoal')?.value || 1;
     this.settingsForm.patchValue({ dailyGoal: Math.min(20, currentValue + 1) });
+  }
+
+  /**
+   * Change application language
+   * @param languageCode - The language code to switch to
+   */
+  async onLanguageChange(languageCode: string) {
+    try {
+      await this.languageService.changeLanguage(languageCode as 'tr' | 'en');
+    } catch (error) {
+      console.error('Dil değiştirilirken hata:', error);
+    }
   }
 }

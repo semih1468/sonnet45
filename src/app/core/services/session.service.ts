@@ -1,7 +1,7 @@
 // T052: Session Service - Pomodoro oturumlarını yönetme
 import { Injectable, inject } from '@angular/core';
+import { Firestore } from '@angular/fire/firestore';
 import {
-  Firestore,
   collection,
   doc,
   addDoc,
@@ -13,7 +13,7 @@ import {
   getDocs,
   serverTimestamp,
   Timestamp
-} from '@angular/fire/firestore';
+} from 'firebase/firestore';
 import { AuthService } from './auth.service';
 import { Session, SessionStatus } from '../models/session.model';
 import { Observable, from } from 'rxjs';

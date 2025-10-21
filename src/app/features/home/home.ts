@@ -3,6 +3,7 @@ import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TimerService } from '../../core/services/timer.service';
 import { SessionService } from '../../core/services/session.service';
 import { SettingsService } from '../../core/services/settings.service';
@@ -14,7 +15,7 @@ import { Task } from '../../core/models/task.model';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   standalone: true

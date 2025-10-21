@@ -7,7 +7,7 @@
         <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" />
       </svg>
     </button>
-    <h1 class="text-[#1E1E1E] dark:text-[#F4F4F4] text-xl font-bold leading-tight tracking-tight flex-1 text-center">Ayarlar</h1>
+    <h1 class="text-[#1E1E1E] dark:text-[#F4F4F4] text-xl font-bold leading-tight tracking-tight flex-1 text-center">{{ 'settings.title' | translate }}</h1>
     <div class="size-12 shrink-0"></div>
   </div>
 
@@ -22,15 +22,15 @@
       <!-- Session Lengths Section -->
       <div>
         <h2 class="text-[#1E1E1E]/80 dark:text-[#F4F4F4]/80 text-sm font-semibold uppercase tracking-wider px-4 pb-3 pt-5">
-          Oturum Süreleri
+          {{ 'settings.sessionDurations' | translate }}
         </h2>
         <div class="bg-white dark:bg-[#2C2C2C] rounded-xl">
           <!-- Focus Duration Slider -->
           <div class="relative flex w-full flex-col items-start justify-between gap-3 p-4 border-b border-gray-200 dark:border-gray-700">
             <div class="flex w-full items-center justify-between">
-              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium leading-normal">Odaklanma</p>
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium leading-normal">{{ 'settings.focusDuration' | translate }}</p>
               <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-sm font-normal leading-normal">
-                {{ settingsForm.get('workDuration')?.value }} dk
+                {{ settingsForm.get('workDuration')?.value }} {{ 'common.minute' | translate }}
               </p>
             </div>
             <div class="flex h-4 w-full items-center gap-4">
@@ -51,9 +51,9 @@
           <!-- Break Duration Slider -->
           <div class="relative flex w-full flex-col items-start justify-between gap-3 p-4">
             <div class="flex w-full items-center justify-between">
-              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium leading-normal">Kısa Mola</p>
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium leading-normal">{{ 'settings.shortBreak' | translate }}</p>
               <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-sm font-normal leading-normal">
-                {{ settingsForm.get('shortBreakDuration')?.value }} dk
+                {{ settingsForm.get('shortBreakDuration')?.value }} {{ 'common.minute' | translate }}
               </p>
             </div>
             <div class="flex h-4 w-full items-center gap-4">
@@ -74,9 +74,9 @@
           <!-- Long Break Duration Slider -->
           <div class="relative flex w-full flex-col items-start justify-between gap-3 p-4 border-t border-gray-200 dark:border-gray-700">
             <div class="flex w-full items-center justify-between">
-              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium leading-normal">Uzun Mola</p>
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium leading-normal">{{ 'settings.longBreak' | translate }}</p>
               <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-sm font-normal leading-normal">
-                {{ settingsForm.get('longBreakDuration')?.value }} dk
+                {{ settingsForm.get('longBreakDuration')?.value }} {{ 'common.minute' | translate }}
               </p>
             </div>
             <div class="flex h-4 w-full items-center gap-4">
@@ -99,12 +99,12 @@
       <!-- General Section -->
       <div>
         <h2 class="text-[#1E1E1E]/80 dark:text-[#F4F4F4]/80 text-sm font-semibold uppercase tracking-wider px-4 pb-3 pt-5">
-          Genel
+          {{ 'settings.general' | translate }}
         </h2>
         <div class="bg-white dark:bg-[#2C2C2C] rounded-xl divide-y divide-gray-200 dark:divide-gray-700">
           <!-- Sound Toggle -->
           <div class="flex items-center justify-between p-4">
-            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">Ses</p>
+            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">{{ 'settings.sound' | translate }}</p>
             <button
               type="button"
               (click)="settingsForm.patchValue({soundEnabled: !settingsForm.get('soundEnabled')?.value})"
@@ -122,7 +122,7 @@
 
           <!-- Dark Mode Toggle -->
           <div class="flex items-center justify-between p-4">
-            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">Karanlık Mod</p>
+            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">{{ 'settings.darkMode' | translate }}</p>
             <button
               type="button"
               (click)="toggleDarkMode()"
@@ -140,7 +140,7 @@
 
           <!-- Auto-start next session Toggle -->
           <div class="flex items-center justify-between p-4">
-            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">Sonraki oturumu otomatik başlat</p>
+            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">{{ 'settings.autoStartNext' | translate }}</p>
             <button
               type="button"
               (click)="settingsForm.patchValue({autoStartBreaks: !settingsForm.get('autoStartBreaks')?.value})"
@@ -158,7 +158,7 @@
 
           <!-- Notifications Toggle -->
           <div class="flex items-center justify-between p-4">
-            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">Bildirimler</p>
+            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">{{ 'settings.notifications' | translate }}</p>
             <button
               type="button"
               (click)="settingsForm.patchValue({notificationsEnabled: !settingsForm.get('notificationsEnabled')?.value})"
@@ -173,18 +173,41 @@
                 class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
             </button>
           </div>
+
+          <!-- Language Selector -->
+          <div class="flex items-center justify-between p-4">
+            <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">{{ 'settings.language' | translate }}</p>
+            <div class="flex gap-2">
+              @for (lang of availableLanguages; track lang.code) {
+                <button
+                  type="button"
+                  (click)="onLanguageChange(lang.code)"
+                  [disabled]="isChangingLanguage$ | async"
+                  [class.bg-[#4A90E2]]="(currentLanguage$ | async) === lang.code"
+                  [class.text-white]="(currentLanguage$ | async) === lang.code"
+                  [class.bg-gray-200]="(currentLanguage$ | async) !== lang.code"
+                  [class.dark:bg-gray-700]="(currentLanguage$ | async) !== lang.code"
+                  [class.text-[#1E1E1E]]="(currentLanguage$ | async) !== lang.code"
+                  [class.dark:text-[#F4F4F4]]="(currentLanguage$ | async) !== lang.code"
+                  [class.opacity-50]="isChangingLanguage$ | async"
+                  class="px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 disabled:cursor-not-allowed">
+                  {{ lang.name }}
+                </button>
+              }
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Goals Section -->
       <div>
         <h2 class="text-[#1E1E1E]/80 dark:text-[#F4F4F4]/80 text-sm font-semibold uppercase tracking-wider px-4 pb-3 pt-5">
-          Hedefler
+          {{ 'settings.goals' | translate }}
         </h2>
         <div class="bg-white dark:bg-[#2C2C2C] rounded-xl">
           <div class="p-4">
             <div class="flex items-center justify-between">
-              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">Günlük Hedef</p>
+              <p class="text-[#1E1E1E] dark:text-[#F4F4F4] text-base font-medium">{{ 'settings.dailyGoal' | translate }}</p>
               <div class="flex items-center gap-2">
                 <button
                   type="button"
@@ -207,7 +230,7 @@
                 </button>
               </div>
             </div>
-            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Günlük tamamlamanız gereken pomodoro sayısı</p>
+            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">{{ 'settings.dailyGoalDescription' | translate }}</p>
           </div>
         </div>
       </div>
@@ -217,7 +240,7 @@
     <div class="px-4 py-6 mt-auto">
       <!-- Success Message -->
       <div *ngIf="showSuccessMessage" class="mb-4 p-3 bg-green-100 dark:bg-green-900/20 rounded-lg text-center">
-        <p class="text-green-600 dark:text-green-400 text-sm font-medium">✓ Ayarlar başarıyla kaydedildi</p>
+        <p class="text-green-600 dark:text-green-400 text-sm font-medium">✓ {{ 'settings.saveSuccess' | translate }}</p>
       </div>
 
       <!-- Save Button -->
@@ -225,7 +248,7 @@
         type="submit"
         [disabled]="settingsForm.invalid || isSaving"
         class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#4A90E2] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#4A90E2]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-        <span class="truncate">{{ isSaving ? 'Kaydediliyor...' : 'Ayarları Kaydet' }}</span>
+        <span class="truncate">{{ isSaving ? ('settings.saving' | translate) : ('settings.saveSettings' | translate) }}</span>
       </button>
 
       <!-- Reset Button -->
@@ -233,7 +256,7 @@
         type="button"
         (click)="resetToDefaults()"
         class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 mt-3 bg-transparent text-gray-600 dark:text-gray-400 text-sm font-medium hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
-        <span class="truncate">Varsayılanlara Dön</span>
+        <span class="truncate">{{ 'settings.resetDefaults' | translate }}</span>
       </button>
     </div>
   </form>
