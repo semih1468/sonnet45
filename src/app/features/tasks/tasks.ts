@@ -1,13 +1,14 @@
 // T105: Tasks Component - Görev yönetimi sayfası
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskService } from '../../core/services/task.service';
 import { Task, CreateTaskDto, TaskPriority } from '../../core/models/task.model';
 
 @Component({
   selector: 'app-tasks',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './tasks.html',
   styleUrl: './tasks.scss',
   standalone: true
@@ -22,7 +23,7 @@ export class TasksComponent implements OnInit {
   viewMode: 'active' | 'completed' | 'all' = 'active';
 
   taskForm: FormGroup = this.fb.group({
-    title: ['', [Validators.required, Validators.minLength(3)]],
+    title: ['', [Validators.required]],
     description: [''],
     priority: ['medium'],
     estimatedPomodoros: [1, [Validators.min(1)]],
@@ -129,6 +130,16 @@ export class TasksComponent implements OnInit {
       month: 'short',
       year: 'numeric'
     });
+  }
+
+  async toggleTaskStatus(task: Task) {
+    try {
+      const newStatus = task.status === 'completed' ? 'active' : 'completed';
+      await this.taskService.updateTask(task.id, { status: newStatus });
+      await this.loadTasks();
+    } catch (error) {
+      console.error('Görev durumu değiştirilirken hata:', error);
+    }
   }
 
   isOverdue(task: Task): boolean {
