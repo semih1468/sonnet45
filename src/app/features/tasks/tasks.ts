@@ -1,14 +1,13 @@
 // T105: Tasks Component - Görev yönetimi sayfası
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskService } from '../../core/services/task.service';
 import { Task, CreateTaskDto, TaskPriority } from '../../core/models/task.model';
 
 @Component({
   selector: 'app-tasks',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './tasks.html',
   styleUrl: './tasks.scss',
   standalone: true

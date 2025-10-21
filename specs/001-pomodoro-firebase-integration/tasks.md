@@ -259,8 +259,6 @@
 - [ ] T154 [P] Performance optimization: ChangeDetectionStrategy.OnPush tüm component'lerde
 - [ ] T155 [P] README.md dosyasını güncelle (kurulum, kullanım, test talimatları)
 - [ ] T156 [P] quickstart.md doğrulaması yap (tüm adımları test et)
-- [ ] T157 Firebase emulator ile e2e test senaryolarını çalıştır
-- [ ] T158 Production deployment (Firebase Hosting)
 
 ---
 

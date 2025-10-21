@@ -1,99 +1,108 @@
-<!-- T057: Home Component HTML Template -->
-<div class="min-h-screen bg-gray-50" [ngClass]="getModeClass()">
+<!-- Home Component - Pomodoro Timer -->
+<div class="relative flex h-screen w-full flex-col items-center justify-between p-4 bg-[#F8F8F8] dark:bg-[#230f0f]">
   <!-- Header -->
-  <header class="bg-white shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-      <div class="flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-gray-900">Pomodoro Timer</h1>
+  <div class="flex w-full items-center justify-between">
+    <h1 class="text-xl font-bold text-slate-900 dark:text-white">Pomodoro</h1>
+    <button
+      routerLink="/settings"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    </button>
+  </div>
 
-        <nav class="flex space-x-4">
-          <a routerLink="/tasks" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-            Görevler
-          </a>
-          <a routerLink="/statistics" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-            İstatistikler
-          </a>
-          <a routerLink="/settings" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-            Ayarlar
-          </a>
-          <button (click)="logout()" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-            Çıkış
-          </button>
-        </nav>
-      </div>
+  <!-- Timer Circle -->
+  <div class="relative flex h-[300px] w-[300px] items-center justify-center" *ngIf="timerState">
+    <!-- Background Circle -->
+    <svg class="absolute h-full w-full" viewBox="0 0 100 100">
+      <circle
+        class="stroke-current text-slate-200 dark:text-slate-700"
+        cx="50"
+        cy="50"
+        fill="none"
+        r="45"
+        stroke-width="5">
+      </circle>
+      <!-- Progress Circle -->
+      <circle
+        class="origin-[50%_50%] -rotate-90 stroke-current text-[#FF4B4B] transition-all duration-1000"
+        cx="50"
+        cy="50"
+        fill="none"
+        r="45"
+        stroke-dasharray="282.74"
+        [attr.stroke-dashoffset]="getProgressOffset()"
+        stroke-width="5">
+      </circle>
+    </svg>
+
+    <!-- Timer Content -->
+    <div class="relative flex flex-col items-center justify-center">
+      <p class="text-sm font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400">
+        {{ getModeTitle() }}
+      </p>
+      <h1 class="text-6xl font-black text-slate-900 dark:text-white">
+        {{ formatTime(timerState.remainingTime) }}
+      </h1>
+
+      <!-- Control Button -->
+      <button
+        (click)="onButtonClick()"
+        class="mt-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#FF4B4B] text-white shadow-lg shadow-[#FF4B4B]/30 hover:bg-[#FF5C5C] transition-colors">
+        <!-- Play Icon -->
+        <svg *ngIf="!timerState.isRunning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 ml-1">
+          <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
+        </svg>
+        <!-- Pause Icon -->
+        <svg *ngIf="timerState.isRunning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+          <path fill-rule="evenodd" d="M6.75 5.25a.75.75 0 01.75-.75H9a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H7.5a.75.75 0 01-.75-.75V5.25zm7.5 0A.75.75 0 0115 4.5h1.5a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H15a.75.75 0 01-.75-.75V5.25z" clip-rule="evenodd" />
+        </svg>
+      </button>
     </div>
-  </header>
+  </div>
 
-  <!-- Main Content -->
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="bg-white rounded-lg shadow-xl p-8" *ngIf="timerState">
-      <!-- Mode Title -->
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-2">
-          {{ getModeTitle() }}
-        </h2>
-        <p class="text-gray-600">
-          Tamamlanan Pomodoro: {{ timerState.completedPomodoros }}
-        </p>
+  <!-- Bottom Stats -->
+  <div class="flex w-full flex-col items-center gap-4 px-4 pb-4">
+    <div class="flex w-full max-w-sm flex-col gap-2">
+      <div class="flex justify-between text-sm font-medium text-slate-500 dark:text-slate-400">
+        <p>Today's Progress</p>
+        <p>{{ timerState?.completedPomodoros || 0 }}/{{ dailyGoal }}</p>
       </div>
-
-      <!-- Timer Display -->
-      <div class="timer-display mb-12">
-        <div class="text-center">
-          <div class="text-8xl font-bold text-gray-900 font-mono">
-            {{ timerState.remainingTime | duration }}
-          </div>
-        </div>
-      </div>
-
-      <!-- Controls -->
-      <div class="flex justify-center space-x-4 mb-8">
-        <button
-          (click)="onButtonClick()"
-          class="px-8 py-4 rounded-lg text-white text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
-          [ngClass]="{
-            'bg-primary-600 hover:bg-primary-700': timerState.mode === 'work',
-            'bg-green-600 hover:bg-green-700': timerState.mode === 'shortBreak',
-            'bg-blue-600 hover:bg-blue-700': timerState.mode === 'longBreak'
-          }">
-          {{ getButtonText() }}
-        </button>
-
-        <button
-          (click)="onReset()"
-          [disabled]="!timerState.isRunning && !timerState.isPaused"
-          class="px-6 py-4 rounded-lg bg-gray-200 text-gray-700 text-lg font-semibold hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200">
-          Sıfırla
-        </button>
-
-        <button
-          (click)="onSkip()"
-          [disabled]="!timerState.isRunning && !timerState.isPaused"
-          class="px-6 py-4 rounded-lg bg-gray-200 text-gray-700 text-lg font-semibold hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200">
-          Atla
-        </button>
-      </div>
-
-      <!-- Mode Indicator -->
-      <div class="flex justify-center space-x-2">
+      <div class="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-700">
         <div
-          class="w-3 h-3 rounded-full"
-          [ngClass]="timerState.mode === 'work' ? 'bg-primary-600' : 'bg-gray-300'">
-        </div>
-        <div
-          class="w-3 h-3 rounded-full"
-          [ngClass]="timerState.mode === 'shortBreak' ? 'bg-green-600' : 'bg-gray-300'">
-        </div>
-        <div
-          class="w-3 h-3 rounded-full"
-          [ngClass]="timerState.mode === 'longBreak' ? 'bg-blue-600' : 'bg-gray-300'">
+          class="h-full rounded-full bg-[#FF4B4B] transition-all duration-300"
+          [style.width.%]="getDailyProgress()">
         </div>
       </div>
     </div>
+    <p class="text-sm text-slate-500 dark:text-slate-400">
+      Next break in: {{ getNextBreakIn() }} session{{ getNextBreakIn() === 1 ? '' : 's' }}
+    </p>
 
-    <!-- Loading State -->
-    <div class="bg-white rounded-lg shadow-xl p-8 text-center" *ngIf="!timerState">
-      <div class="text-gray-600">Yükleniyor...</div>
+    <!-- Navigation Links -->
+    <div class="flex gap-4 mt-4">
+      <button
+        routerLink="/tasks"
+        class="text-xs text-slate-500 dark:text-slate-400 hover:text-[#FF4B4B] transition-colors">
+        Tasks
+      </button>
+      <button
+        routerLink="/statistics"
+        class="text-xs text-slate-500 dark:text-slate-400 hover:text-[#FF4B4B] transition-colors">
+        Stats
+      </button>
+      <button
+        routerLink="/history"
+        class="text-xs text-slate-500 dark:text-slate-400 hover:text-[#FF4B4B] transition-colors">
+        History
+      </button>
+      <button
+        (click)="logout()"
+        class="text-xs text-slate-500 dark:text-slate-400 hover:text-[#FF4B4B] transition-colors">
+        Logout
+      </button>
     </div>
-  </main>
+  </div>
 </div>

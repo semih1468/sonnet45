@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   timerState: TimerState | null = null;
   settings: Settings | null = null;
+  dailyGoal = 8; // Default daily goal
 
   private timerSubscription?: Subscription;
   private settingsSubscription?: Subscription;
@@ -40,6 +41,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     // Settings'i dinle
     this.settingsSubscription = this.settingsService.settings$.subscribe(settings => {
       this.settings = settings;
+      if (settings) {
+        this.dailyGoal = settings.dailyGoal || 8;
+      }
     });
   }
 
@@ -109,14 +113,53 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     switch (this.timerState.mode) {
       case 'work':
-        return 'Çalışma Zamanı';
+        return 'FOCUS';
       case 'shortBreak':
-        return 'Kısa Mola';
+        return 'SHORT BREAK';
       case 'longBreak':
-        return 'Uzun Mola';
+        return 'LONG BREAK';
       default:
         return '';
     }
+  }
+
+  // Format time for display
+  formatTime(seconds: number): string {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  // Get progress offset for circle
+  getProgressOffset(): number {
+    if (!this.timerState || !this.settings) return 282.74;
+
+    let totalTime = 0;
+    if (this.timerState.mode === 'work') {
+      totalTime = this.settings.workDuration * 60;
+    } else if (this.timerState.mode === 'shortBreak') {
+      totalTime = this.settings.shortBreakDuration * 60;
+    } else {
+      totalTime = this.settings.longBreakDuration * 60;
+    }
+
+    const progress = ((totalTime - this.timerState.remainingTime) / totalTime) * 100;
+    return 282.74 - (282.74 * progress / 100);
+  }
+
+  // Daily progress percentage
+  getDailyProgress(): number {
+    if (!this.timerState) return 0;
+    const progress = (this.timerState.completedPomodoros / this.dailyGoal) * 100;
+    return Math.min(100, progress);
+  }
+
+  // Next break calculation
+  getNextBreakIn(): number {
+    if (!this.timerState || !this.settings) return 0;
+    const sessionsUntilLongBreak = this.settings.longBreakInterval || 4;
+    const currentSession = this.timerState.completedPomodoros % sessionsUntilLongBreak;
+    return sessionsUntilLongBreak - currentSession;
   }
 
   // Mod CSS class'ını getir

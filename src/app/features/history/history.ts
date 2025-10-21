@@ -1,14 +1,12 @@
 // T072: History Component - Pomodoro geçmişi sayfası
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { SessionService } from '../../core/services/session.service';
 import { Session } from '../../core/models/session.model';
-import { DurationPipe } from '../../shared/pipes/duration.pipe';
 
 @Component({
   selector: 'app-history',
-  imports: [CommonModule, RouterLink, DurationPipe],
+  imports: [CommonModule],
   templateUrl: './history.html',
   styleUrl: './history.scss',
   standalone: true

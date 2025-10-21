@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create Account - Pomodoro App</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#4FD1C5",
+              "background-light": "#f0f2f5",
+              "background-dark": "#121212",
+              "text-light": "#1f2937",
+              "text-dark": "#E2E8F0",
+              "text-secondary-dark": "#A0AEC0",
+              "input-bg-dark": "#1F2937",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem",
+              "lg": "0.75rem",
+              "xl": "1rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .form-input:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            --tw-ring-color: #4FD1C5;
+            box-shadow: 0 0 0 2px #4FD1C5;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark flex items-center justify-center min-h-screen">
+<div class="w-full max-w-md p-8 space-y-8">
+<div class="text-center">
+<div class="inline-block p-3 rounded-full bg-input-bg-dark mb-6">
+<span class="material-symbols-outlined text-primary text-4xl">
+                    timer
+                </span>
+</div>
+<h1 class="text-3xl font-bold text-text-light dark:text-text-dark font-display">Create Your Account</h1>
+</div>
+<form class="mt-8 space-y-6">
+<div class="rounded-md shadow-sm -space-y-px">
+<div>
+<label class="flex flex-col min-w-40 flex-1">
+<p class="text-sm font-medium text-text-light dark:text-text-dark pb-2 font-display">Full Name</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-0 border-none bg-gray-200 dark:bg-input-bg-dark h-14 placeholder:text-gray-500 dark:placeholder:text-text-secondary-dark p-4 text-base font-normal leading-normal font-display" placeholder="Enter your full name" value=""/>
+</label>
+</div>
+<div class="pt-4">
+<label class="flex flex-col min-w-40 flex-1">
+<p class="text-sm font-medium text-text-light dark:text-text-dark pb-2 font-display">Email Address</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-0 border-none bg-gray-200 dark:bg-input-bg-dark h-14 placeholder:text-gray-500 dark:placeholder:text-text-secondary-dark p-4 text-base font-normal leading-normal font-display" placeholder="Enter your email address" type="email" value=""/>
+</label>
+</div>
+<div class="pt-4">
+<label class="flex flex-col min-w-40 flex-1">
+<p class="text-sm font-medium text-text-light dark:text-text-dark pb-2 font-display">Password</p>
+<div class="flex w-full flex-1 items-stretch rounded-lg">
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-0 border-none bg-gray-200 dark:bg-input-bg-dark h-14 placeholder:text-gray-500 dark:placeholder:text-text-secondary-dark p-4 rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal font-display" placeholder="Enter your password" type="password" value=""/>
+<button class="text-text-secondary-dark flex border-none bg-gray-200 dark:bg-input-bg-dark items-center justify-center pr-4 rounded-r-lg border-l-0" data-icon="Eye" data-size="24px" data-weight="regular" type="button">
+<span class="material-symbols-outlined">
+                                    visibility_off
+                                </span>
+</button>
+</div>
+</label>
+</div>
+</div>
+<div class="pt-6">
+<button class="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-5 bg-primary text-background-dark text-base font-bold leading-normal tracking-wide font-display transition-transform duration-200 hover:scale-105 active:scale-100">
+<span class="truncate">Sign Up</span>
+</button>
+</div>
+</form>
+<p class="mt-6 text-center text-sm text-gray-600 dark:text-text-secondary-dark font-display">
+            Already have an account?
+            <a class="font-medium text-primary hover:text-primary/80" href="#">
+                Log In
+            </a>
+</p>
+</div>
+</body></html>

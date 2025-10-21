@@ -218,7 +218,7 @@ export class StatisticsService {
     const settings = this.settingsService.getCurrentSettings();
     const dailyGoal = settings.dailyGoal || 8;
 
-    return Math.min(100, Math.round((todayStats.status === 'completed'Sessions / dailyGoal) * 100));
+    return Math.min(100, Math.round((todayStats.completedSessions / dailyGoal) * 100));
   }
 
   // T148: Sonraki long break'e kalan session sayısı

@@ -1,13 +1,12 @@
 // T142-T148: Statistics Component - İstatistikler sayfası
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { StatisticsService } from '../../core/services/statistics.service';
 import { DailyStats, WeeklyStats, MonthlyStats } from '../../core/models/statistics.model';
 
 @Component({
   selector: 'app-statistics',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './statistics.html',
   styleUrl: './statistics.scss',
   standalone: true
