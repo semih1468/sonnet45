@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Weekly Progress</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#06D6A0",
+            "background-light": "#f8f5f5",
+            "background-dark": "#1E1E1E",
+            "card-dark": "#2C2C2E",
+            "accent": "#EF476F",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col dark group/design-root overflow-x-hidden">
+<div class="flex items-center p-4 pb-2 justify-between bg-background-dark">
+<div class="flex size-12 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-white">arrow_back</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Weekly Progress</h2>
+<div class="w-12"></div>
+</div>
+<div class="flex px-4 py-3 bg-background-dark">
+<div class="flex h-10 flex-1 items-center justify-center rounded-lg bg-card-dark p-1">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-dark has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-white text-gray-400 text-sm font-medium leading-normal">
+<span class="truncate">Weekly</span>
+<input checked="" class="invisible w-0" name="time-range" type="radio" value="Weekly"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-dark has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-white text-gray-400 text-sm font-medium leading-normal">
+<span class="truncate">Monthly</span>
+<input class="invisible w-0" name="time-range" type="radio" value="Monthly"/>
+</label>
+</div>
+</div>
+<div class="flex flex-wrap gap-4 px-4 py-6 bg-background-dark">
+<div class="flex min-w-72 flex-1 flex-col gap-4 p-6 rounded-xl bg-card-dark">
+<div class="flex flex-col gap-2">
+<p class="text-white text-base font-medium leading-normal">Weekly Focus Time</p>
+<p class="text-white tracking-light text-[32px] font-bold leading-tight truncate">14h 10m</p>
+<div class="flex gap-2 items-center">
+<p class="text-gray-400 text-base font-normal leading-normal">Oct 23 - Oct 29</p>
+<p class="text-primary text-base font-medium leading-normal flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">arrow_upward</span>
+<span>10%</span>
+</p>
+</div>
+</div>
+<div class="grid min-h-[180px] grid-flow-col gap-4 grid-rows-[1fr_auto] items-end justify-items-center">
+<div class="w-full rounded-t-sm bg-primary" style="height: 20%;"></div>
+<p class="text-gray-400 text-[13px] font-bold leading-normal tracking-[0.015em]">M</p>
+<div class="w-full rounded-t-sm bg-primary" style="height: 100%;"></div>
+<p class="text-gray-400 text-[13px] font-bold leading-normal tracking-[0.015em]">T</p>
+<div class="w-full rounded-t-sm bg-primary" style="height: 50%;"></div>
+<p class="text-gray-400 text-[13px] font-bold leading-normal tracking-[0.015em]">W</p>
+<div class="w-full rounded-t-sm bg-primary" style="height: 50%;"></div>
+<p class="text-gray-400 text-[13px] font-bold leading-normal tracking-[0.015em]">T</p>
+<div class="w-full rounded-t-sm bg-primary" style="height: 30%;"></div>
+<p class="text-gray-400 text-[13px] font-bold leading-normal tracking-[0.015em]">F</p>
+<div class="w-full rounded-t-sm bg-accent" style="height: 15%;"></div>
+<p class="text-accent text-[13px] font-bold leading-normal tracking-[0.015em]">S</p>
+<div class="w-full rounded-t-sm bg-primary" style="height: 80%;"></div>
+<p class="text-gray-400 text-[13px] font-bold leading-normal tracking-[0.015em]">S</p>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-4 p-4 pt-0">
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-card-dark">
+<p class="text-gray-300 text-sm font-medium leading-normal">Avg. Session</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">25 min</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-card-dark">
+<p class="text-gray-300 text-sm font-medium leading-normal">Total Pomodoros</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">34</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-card-dark">
+<p class="text-gray-300 text-sm font-medium leading-normal flex items-center gap-1.5">Productivity Streak <span class="material-symbols-outlined text-accent text-base">local_fire_department</span></p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">12 days</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-card-dark">
+<p class="text-gray-300 text-sm font-medium leading-normal">Total Focus</p>
+<p class="text-white tracking-light text-2xl font-bold leading-tight">14h 10m</p>
+</div>
+</div>
+<div class="px-4 py-3 mt-auto">
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-primary text-background-dark text-base font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">Start New Session</span>
+</button>
+</div>
+</div>
+</body></html>
